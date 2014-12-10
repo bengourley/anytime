@@ -4,6 +4,16 @@
 
 A date/time picker.
 
+## Time, anyone?
+
+I *really* didn't want to write this module but there are no good open source alternatives. In our CMSs at [clock](https://github.com/clocklimited/) we have tonnes of instances where a **time** needs to be selected: article live dates, offer expiry dates and other scheduling.
+
+Until now we've made-do with the bloaty [jQuery UI datepicker](http://jqueryui.com/datepicker/) with the hacky [timepicker extension](http://trentrichardson.com/examples/timepicker/). I thought, "surely, someone must have built a decent, modular date *and* time picker by now?". [pikaday](https://github.com/dbushell/Pikaday) comes close – at least it's on npm, but you still have to rely on a choice of [three](https://github.com/stas/Pikaday) [different](https://github.com/xeeali/Pikaday) [forks](https://github.com/owenmead/Pikaday) for time picking.
+
+So please join me, on a journey of modularity and package managed glory in creating a date/time picker once and for all!
+
+Stay tuned.
+
 ## Credits
 * [Ben Gourley](https://github.com/bengourley/)
 
