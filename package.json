@@ -1,0 +1,37 @@
+{
+  "name": "anytime",
+  "version": "0.0.0",
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bengourley/anytime.git"
+  },
+  "description": "A date/time picker",
+  "main": "anytime.js",
+  "scripts": {
+    "lint": "jshint . --reporter=./node_modules/jshint-full-path/index.js",
+    "pretest": "npm run-script lint",
+    "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test/simulate-browser-env",
+    "posttest": "istanbul check-coverage && rm -rf coverage",
+    "prepublish": "npm test && npm prune",
+    "demo": "browserify -r ./anytime ./anytime.js > bundle.js && open demo.html"
+  },
+  "author": "Ben Gourley",
+  "license": "ISC",
+  "dependencies": {
+    "element-class": "^0.2.0",
+    "hat": "0.0.3",
+    "lodash.assign": "^2.4.1",
+    "moment": "^2.8.4",
+    "pad-number": "0.0.1"
+  },
+  "devDependencies": {
+    "istanbul": "^0.3.2",
+    "jsdom": "^1.0.1",
+    "jshint": "^2.5.6",
+    "jshint-full-path": "^1.1.1",
+    "mocha": "^1.21.5"
+  }
+}
