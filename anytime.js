@@ -197,7 +197,7 @@ AnytimePicker.prototype.updateDisplay = function () {
 AnytimePicker.prototype.show = function () {
   elementClass(this.el).add('anytime-picker--is-visible')
   if (this.options.anchor) {
-    this.el.style.top = this.options.anchor.offsetTop + this.options.anchor.offsetHeight + this.offset
+    this.el.style.top = this.options.anchor.offsetTop + this.options.anchor.offsetHeight + this.options.offset
     this.el.style.left =
       this.options.anchor.offsetLeft + (this.options.anchor.offsetWidth / 2) - (this.el.offsetWidth / 2)
   }
