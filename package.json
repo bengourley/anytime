@@ -21,11 +21,11 @@
   "author": "Ben Gourley",
   "license": "ISC",
   "dependencies": {
+    "document-offset": "^1.0.2",
     "element-class": "^0.2.0",
-    "hat": "0.0.3",
-    "lodash.assign": "^2.4.1",
+    "lodash.assign": "*",
     "moment": "^2.8.4",
-    "pad-number": "0.0.1"
+    "pad-number": "^0.0.1"
   },
   "devDependencies": {
     "istanbul": "^0.3.2",

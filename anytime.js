@@ -7,14 +7,16 @@ var moment = require('moment')
   , elementClass = require('element-class')
   , extend = require('lodash.assign')
   , pad = require('pad-number')
+  , offset = require('document-offset')
   , getYearList = require('./lib/get-year-list')
   , createButton = require('./lib/create-button')
   , getMonthDetails = require('./lib/get-month-details')
   , defaults =
       { minYear: 1960
       , maxYear: 2030
-      , offset: 10
+      , offset: 5
       , initialValue: new Date()
+      , format: 'h:mma on dddd D MMMM YYYY'
       }
 
 function AnytimePicker(options) {
@@ -41,11 +43,14 @@ function AnytimePicker(options) {
   }.bind(this))
 
   this.on('change', function (value) {
+    if (value) value = moment(value).format(this.options.format)
     this.options.input.value = value
   }.bind(this))
 
-  this.options.button.addEventListener('click', this.show.bind(this))
+  if (this.options.button) this.options.button.addEventListener('click', this.show.bind(this))
   this.options.input.addEventListener('click', this.show.bind(this))
+
+  if (!this.options.anchor) this.options.anchor = this.options.input
 
 }
 
@@ -179,7 +184,7 @@ AnytimePicker.prototype.updateDisplay = function () {
   }
 
   for (var y = 1; y <= monthDetails.length; y++) {
-    var date = document.createElement('span')
+    var date = document.createElement('button')
     date.textContent = y
     elementClass(date).add('anytime-picker__date')
     elementClass(date).add('js-anytime-picker-day')
@@ -196,12 +201,9 @@ AnytimePicker.prototype.updateDisplay = function () {
 
 AnytimePicker.prototype.show = function () {
   elementClass(this.el).add('anytime-picker--is-visible')
-  if (this.options.anchor) {
-    var offsetTop = this.options.anchor.offsetTop + this.options.anchor.offsetHeight + this.options.offset
-      , offsetLeft = this.options.anchor.offsetLeft + (this.options.anchor.offsetWidth / 2) - (this.el.offsetWidth / 2)
-    this.el.style.top = offsetTop + 'px'
-    this.el.style.left = offsetLeft + 'px'
-  }
+  var position = offset(this.options.anchor)
+  this.el.style.top = (position.top + this.options.anchor.offsetHeight + this.options.offset) + 'px'
+  this.el.style.left = (position.left + this.options.anchor.offsetWidth - this.el.offsetWidth) + 'px'
 }
 
 AnytimePicker.prototype.hide = function () {
