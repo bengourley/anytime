@@ -51,8 +51,9 @@ function AnytimePicker(options) {
     this.options.input.value = value
   }.bind(this))
 
-  if (this.options.button) this.options.button.addEventListener('click', this.show.bind(this))
-  this.options.input.addEventListener('click', this.show.bind(this))
+  this.__events['misc show'] = this.show.bind(this)
+  if (this.options.button) this.options.button.addEventListener('click', this.__events['misc show'])
+  this.options.input.addEventListener('click', this.__events['misc show'])
 
   if (!this.options.anchor) this.options.anchor = this.options.input
 
@@ -314,6 +315,9 @@ AnytimePicker.prototype.destroy = function () {
   this.hide()
   this.emit('destroy')
   this.removeAllListeners()
+  if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc show'])
+  this.options.input.removeEventListener('click', this.__events['misc show'])
+  delete this.__events['misc show']
   if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
   this.el = null
 }
