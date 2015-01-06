@@ -198,7 +198,9 @@ AnytimePicker.prototype.updateDisplay = function () {
     daysEl.appendChild(date)
   }
 
-  Array.prototype.slice.call(this.dateContainer.children).forEach(function (child) { child.remove() })
+  Array.prototype.slice.call(this.dateContainer.children).forEach(function (child) {
+    if (child.parentNode) child.parentNode.removeChild(child)
+  })
   Array.prototype.slice.call(daysEl.children).forEach(function (child) { this.dateContainer.appendChild(child) }.bind(this))
 
 }
@@ -309,6 +311,9 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 }
 
 AnytimePicker.prototype.destroy = function () {
+  this.hide()
+  this.emit('destroy')
   this.removeAllListeners()
-  this.el.remove()
+  if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
+  this.el = null
 }

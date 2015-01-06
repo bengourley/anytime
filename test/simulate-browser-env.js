@@ -10,3 +10,5 @@ before(function (done) {
 })
 
 require('./anytime.test.js')
+require('./get-month-details.test.js')
+require('./get-year-list.test.js')
