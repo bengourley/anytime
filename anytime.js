@@ -25,6 +25,10 @@ function AnytimePicker(options) {
 
   Emitter.call(this)
 
+  // A place to store references to event callback functions
+  // so they can be specifically unbound later on
+  this.__events = {}
+
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
@@ -200,14 +204,39 @@ AnytimePicker.prototype.updateDisplay = function () {
 }
 
 AnytimePicker.prototype.show = function () {
+
   elementClass(this.el).add('anytime-picker--is-visible')
   var position = offset(this.options.anchor)
   this.el.style.top = (position.top + this.options.anchor.offsetHeight + this.options.offset) + 'px'
   this.el.style.left = (position.left + this.options.anchor.offsetWidth - this.el.offsetWidth) + 'px'
+
+  this.__events['doc escape keypress'] = function (e) {
+    // Hide if escape is pressed
+    if (e.keyCode === 27) this.hide()
+  }.bind(this)
+
+  this.__events['other anytime open'] = function (e) {
+    // Hide if another instance is opened
+    if (e.detail.instance !== this) this.hide()
+  }.bind(this)
+
+  document.addEventListener('keyup', this.__events['doc escape keypress'])
+  document.addEventListener('anytime::open', this.__events['other anytime open'])
+
+  document.dispatchEvent(new CustomEvent('anytime::open', { detail: { instance: this } }))
+
 }
 
 AnytimePicker.prototype.hide = function () {
+
   elementClass(this.el).remove('anytime-picker--is-visible')
+
+  document.removeEventListener('keyup', this.__events['keyup escToClose'])
+  delete this.__events['keyup escToClose']
+
+  document.removeEventListener('anytime::open', this.__events['other anytime open'])
+  delete this.__events['keyup escToClose']
+
 }
 
 AnytimePicker.prototype.showPrevMonth = function () {
@@ -277,4 +306,9 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
   timeEl.appendChild(minuteSelect)
 
+}
+
+AnytimePicker.prototype.destroy = function () {
+  this.removeAllListeners()
+  this.el.remove()
 }
