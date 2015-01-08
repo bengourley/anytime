@@ -21,8 +21,7 @@
   "author": "Ben Gourley",
   "license": "ISC",
   "dependencies": {
-    "document-offset": "^1.0.2",
-    "element-class": "^0.2.0",
+    "classlist": "^1.0.1",
     "lodash.assign": "*",
     "moment": "^2.8.4",
     "pad-number": "^0.0.1"

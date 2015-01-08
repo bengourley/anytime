@@ -4,13 +4,12 @@ var moment = require('moment')
   , months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
   // , days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ]
   , Emitter = require('events').EventEmitter
-  , elementClass = require('element-class')
   , extend = require('lodash.assign')
   , pad = require('pad-number')
-  , offset = require('document-offset')
   , getYearList = require('./lib/get-year-list')
   , createButton = require('./lib/create-button')
   , getMonthDetails = require('./lib/get-month-details')
+  , classList = require('classlist')
   , defaults =
       { minYear: 1960
       , maxYear: 2030
@@ -38,13 +37,16 @@ function AnytimePicker(options) {
   this.value = moment(this.options.initialValue).seconds(0).milliseconds(0)
 
   this.el.addEventListener('click', function (e) {
-    if (elementClass(e.target).has('js-anytime-picker-day')) {
+    if (classList(e.target).contains('js-anytime-picker-day')) {
       this.value.date(parseInt(e.target.getAttribute('data-date'), 10))
       this.value.month(parseInt(e.target.getAttribute('data-month'), 10))
       this.value.year(parseInt(e.target.getAttribute('data-year'), 10))
       this.emit('change', this.value)
     }
   }.bind(this))
+
+  // If the target element is within a form element this stops button clicks from submitting it
+  this.el.addEventListener('click', function (e) { e.preventDefault() })
 
   this.on('change', function (value) {
     if (value) value = moment(value).format(this.options.format)
@@ -55,7 +57,7 @@ function AnytimePicker(options) {
   if (this.options.button) this.options.button.addEventListener('click', this.__events['misc show'])
   this.options.input.addEventListener('click', this.__events['misc show'])
 
-  if (!this.options.anchor) this.options.anchor = this.options.input
+  this.root = this.options.anchor ? this.options.anchor : this.options.input
 
 }
 
@@ -65,23 +67,23 @@ AnytimePicker.prototype.render = function () {
 
   // Header
   var header = document.createElement('div')
-  elementClass(header).add('anytime-picker__header')
+  classList(header).add('anytime-picker__header')
   this.renderHeader(header)
 
   // Dates
   var dates = document.createElement('div')
-  elementClass(dates).add('anytime-picker__dates')
-  elementClass(dates).add('js-anytime-picker-dates')
+  classList(dates).add('anytime-picker__dates')
+  classList(dates).add('js-anytime-picker-dates')
 
   // Time
   var time = document.createElement('div')
-  elementClass(time).add('anytime-picker__time')
-  elementClass(time).add('js-anytime-picker-time')
+  classList(time).add('anytime-picker__time')
+  classList(time).add('js-anytime-picker-time')
   this.renderTimeInput(time)
 
   // Footer
   var footer = document.createElement('div')
-  elementClass(footer).add('anytime-picker__footer')
+  classList(footer).add('anytime-picker__footer')
   this.renderFooter(footer)
 
   this.el.appendChild(header)
@@ -94,6 +96,7 @@ AnytimePicker.prototype.render = function () {
   this.updateDisplay()
 
   return this
+
 }
 
 AnytimePicker.prototype.renderHeader = function (headerEl) {
@@ -105,8 +108,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
 
   // Months
   var monthSelect = document.createElement('select')
-  elementClass(monthSelect).add('js-anytime-picker-month')
-  elementClass(monthSelect).add('anytime-picker__dropdown')
+  classList(monthSelect).add('js-anytime-picker-month', 'anytime-picker__dropdown')
   months.forEach(function (month, i) {
     var monthOption = document.createElement('option')
     monthOption.textContent = month
@@ -123,8 +125,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
 
   // Years
   var yearSelect = document.createElement('select')
-  elementClass(yearSelect).add('js-anytime-picker-year')
-  elementClass(yearSelect).add('anytime-picker__dropdown')
+  classList(yearSelect).add('js-anytime-picker-year', 'anytime-picker__dropdown')
   getYearList(this.options.minYear, this.options.maxYear).forEach(function (year) {
     var yearOption = document.createElement('option')
     yearOption.textContent = year
@@ -150,16 +151,14 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
 
   // 'Done' button
   var doneBtn = document.createElement('button')
-  elementClass(doneBtn).add('anytime-picker__button')
-  elementClass(doneBtn).add('anytime-picker__button--done')
+  classList(doneBtn).add('anytime-picker__button', 'anytime-picker__button--done')
   doneBtn.textContent = 'Done'
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', this.hide.bind(this))
 
   // 'Clear' button
   var clearBtn = document.createElement('button')
-  elementClass(clearBtn).add('anytime-picker__button')
-  elementClass(clearBtn).add('anytime-picker__button--next')
+  classList(clearBtn).add('anytime-picker__button', 'anytime-picker__button--next')
   clearBtn.textContent = 'Clear'
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
@@ -191,8 +190,7 @@ AnytimePicker.prototype.updateDisplay = function () {
   for (var y = 1; y <= monthDetails.length; y++) {
     var date = document.createElement('button')
     date.textContent = y
-    elementClass(date).add('anytime-picker__date')
-    elementClass(date).add('js-anytime-picker-day')
+    classList(date).add('anytime-picker__date', 'js-anytime-picker-day')
     date.setAttribute('data-date', y)
     date.setAttribute('data-month', this.currentView.month)
     date.setAttribute('data-year', this.currentView.year)
@@ -208,10 +206,14 @@ AnytimePicker.prototype.updateDisplay = function () {
 
 AnytimePicker.prototype.show = function () {
 
-  elementClass(this.el).add('anytime-picker--is-visible')
-  var position = offset(this.options.anchor)
-  this.el.style.top = (position.top + this.options.anchor.offsetHeight + this.options.offset) + 'px'
-  this.el.style.left = (position.left + this.options.anchor.offsetWidth - this.el.offsetWidth) + 'px'
+  this.root.offsetParent.appendChild(this.el)
+
+  classList(this.el).add('anytime-picker--is-visible')
+
+  var position = { top: this.root.offsetTop, left: this.root.offsetLeft }
+
+  this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
+  this.el.style.left = (position.left + this.root.offsetWidth - this.el.offsetWidth) + 'px'
 
   this.__events['doc escape keypress'] = function (e) {
     // Hide if escape is pressed
@@ -232,13 +234,15 @@ AnytimePicker.prototype.show = function () {
 
 AnytimePicker.prototype.hide = function () {
 
-  elementClass(this.el).remove('anytime-picker--is-visible')
+  classList(this.el).remove('anytime-picker--is-visible')
 
   document.removeEventListener('keyup', this.__events['keyup escToClose'])
   delete this.__events['keyup escToClose']
 
   document.removeEventListener('anytime::open', this.__events['other anytime open'])
   delete this.__events['keyup escToClose']
+
+  if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
 
 }
 
@@ -271,7 +275,7 @@ AnytimePicker.prototype.showNextMonth = function () {
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
   var hourSelect = document.createElement('select')
-  elementClass(hourSelect).add('anytime-picker__dropdown')
+  classList(hourSelect).add('anytime-picker__dropdown')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
@@ -288,12 +292,12 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
   timeEl.appendChild(hourSelect)
 
   var colonEl = document.createElement('span')
-  elementClass(minuteSelect).add('anytime-picker__time-separator')
+  classList(colonEl).add('anytime-picker__time-separator')
   colonEl.textContent = ':'
   timeEl.appendChild(colonEl)
 
   var minuteSelect = document.createElement('select')
-  elementClass(minuteSelect).add('anytime-picker__dropdown')
+  classList(minuteSelect).add('anytime-picker__dropdown')
   for (var j = 0; j < 59; j++) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
@@ -318,6 +322,5 @@ AnytimePicker.prototype.destroy = function () {
   if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc show'])
   this.options.input.removeEventListener('click', this.__events['misc show'])
   delete this.__events['misc show']
-  if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
   this.el = null
 }
