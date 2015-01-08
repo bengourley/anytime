@@ -1,6 +1,6 @@
 {
   "name": "anytime",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
   },
