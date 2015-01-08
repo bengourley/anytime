@@ -236,8 +236,8 @@ AnytimePicker.prototype.hide = function () {
 
   classList(this.el).remove('anytime-picker--is-visible')
 
-  document.removeEventListener('keyup', this.__events['keyup escToClose'])
-  delete this.__events['keyup escToClose']
+  document.removeEventListener('keyup', this.__events['doc escape keypress'])
+  delete this.__events['doc escape keypress']
 
   document.removeEventListener('anytime::open', this.__events['other anytime open'])
   delete this.__events['keyup escToClose']
