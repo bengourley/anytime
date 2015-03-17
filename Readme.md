@@ -14,6 +14,30 @@ So please join me, on a journey of modularity and package managed glory in creat
 
 Stay tuned.
 
+## Usage
+### `var picker = new AnyTime(options)`
+
+Options can be the following:
+
+- `minYear` - minimum year. Defaults to `1960`
+- `maxYear` - maximum year. Defaults to `2030`
+- `offset` - number of pixels to offset the element top. Defaults to `5`
+- `initialValue` - value to set the date picker to. Defaults to `new Date()`
+- `format` - [moment-style](http://momentjs.com/docs/#/displaying/format/) date format string. Defaults to `'h:mma on dddd D MMMM YYYY'`
+
+#### `picker.render()` - Renders the date picker
+#### `picker.show()` - Shows the date picker
+#### `picker.hide()` - Hides the date picker
+#### `picker.destroy()` - Destroys the date picker instance
+
+#### Internal API methods - you probably won't need these
+##### `picker.renderHeader()` - Renders the header
+##### `picker.renderFooter()` - Renders the footer
+##### `picker.renderTimeInput()` - Renders the time input
+##### `picker.updateDisplay()` - Updates the elements to reflect the internal date state
+##### `picker.showPrevMonth()` - Shows the previous month
+##### `picker.showNextMonth()` - Shows the next month
+
 ## Credits
 * [Ben Gourley](https://github.com/bengourley/)
 
