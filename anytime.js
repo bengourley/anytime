@@ -58,6 +58,7 @@ function AnytimePicker(options) {
     value = createMoment.call(this, value)
     this.value = value
     this.options.input.value = value.format(this.options.format)
+    this.updateDisplay()
   }.bind(this))
 
   this.__events['misc show'] = this.show.bind(this)
@@ -194,10 +195,27 @@ AnytimePicker.prototype.updateDisplay = function () {
     daysEl.appendChild(blank)
   }
 
+  var currentDayOfMonth = +moment().format('D')
+    , isCurrentMonth = +moment().month() === this.currentView.month
+    , isCurrentYear = +moment().year() === this.currentView.year
+    , selectedDayOfMonth = +createMoment.call(this, this.value).format('D')
+    , isSelectedCurrentMonth = +createMoment.call(this, this.value).month() === this.currentView.month
+    , isSelectedCurrentYear = +createMoment.call(this, this.value).year() === this.currentView.year
+
   for (var y = 1; y <= monthDetails.length; y++) {
     var date = document.createElement('button')
     date.textContent = y
-    classList(date).add('anytime-picker__date', 'js-anytime-picker-day')
+    var cl = classList(date)
+    cl.add('anytime-picker__date', 'js-anytime-picker-day')
+
+    if (y === currentDayOfMonth && isCurrentMonth && isCurrentYear) {
+      cl.add('anytime-picker__date--current')
+    }
+
+    // Needs to add or remove because the current selected day can change
+    // within the current month and need to be cleared from others
+    cl[y === selectedDayOfMonth && isSelectedCurrentMonth && isSelectedCurrentYear ? 'add' : 'remove']('anytime-picker__date--selected')
+
     date.setAttribute('data-date', y)
     date.setAttribute('data-month', this.currentView.month)
     date.setAttribute('data-year', this.currentView.year)
@@ -282,7 +300,7 @@ AnytimePicker.prototype.showNextMonth = function () {
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
   var hourSelect = document.createElement('select')
-  classList(hourSelect).add('anytime-picker__dropdown')
+  classList(hourSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--hours')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
