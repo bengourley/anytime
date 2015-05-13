@@ -1,6 +1,6 @@
 module.exports = AnytimePicker
 
-var moment = require('moment')
+var moment = require('moment-timezone')
   , months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
   // , days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ]
   , Emitter = require('events').EventEmitter
@@ -18,6 +18,12 @@ var moment = require('moment')
       , format: 'h:mma on dddd D MMMM YYYY'
       }
 
+function createMoment(value) {
+  if (this.options.timezone) return moment.tz(value, this.options.timezone)
+
+  return moment(value)
+}
+
 function AnytimePicker(options) {
 
   this.options = extend({}, defaults, options)
@@ -31,10 +37,10 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
-  var initialValue = moment(this.options.initialValue)
+  var initialValue = createMoment.call(this, this.options.initialValue)
   this.currentView = { month: initialValue.month(), year: initialValue.year() }
 
-  this.value = moment(this.options.initialValue).seconds(0).milliseconds(0)
+  this.value = createMoment.call(this, this.options.initialValue).seconds(0).milliseconds(0)
 
   this.el.addEventListener('click', function (e) {
     if (classList(e.target).contains('js-anytime-picker-day')) {
@@ -49,8 +55,10 @@ function AnytimePicker(options) {
   this.el.addEventListener('click', function (e) { e.preventDefault() })
 
   this.on('change', function (value) {
-    if (value) value = moment(value).format(this.options.format)
-    this.options.input.value = value
+    if (!value) return
+    value = createMoment.call(this, value)
+    this.value = value
+    this.options.input.value = value.format(this.options.format)
   }.bind(this))
 
   this.__events['misc show'] = this.show.bind(this)
@@ -280,7 +288,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
     hour.textContent = pad(i, 2)
-    if (moment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+    if (createMoment.call(this, this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
     hourSelect.appendChild(hour)
   }
 
@@ -302,7 +310,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
     minute.textContent = pad(j, 2)
-    if (moment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+    if (createMoment.call(this, this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
     minuteSelect.appendChild(minute)
   }
 
