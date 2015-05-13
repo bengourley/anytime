@@ -141,7 +141,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   }.bind(this))
 
   // Next month button
-  var nextBtn = createButton('>', [ 'anytime-picker__button', 'anytime-picker__button--prev' ])
+  var nextBtn = createButton('>', [ 'anytime-picker__button', 'anytime-picker__button--next' ])
   headerEl.appendChild(nextBtn)
   nextBtn.addEventListener('click', this.showNextMonth.bind(this))
 
