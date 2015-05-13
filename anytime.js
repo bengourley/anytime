@@ -2,7 +2,6 @@ module.exports = AnytimePicker
 
 var moment = require('moment-timezone')
   , months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-  // , days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ]
   , Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
   , pad = require('pad-number')
