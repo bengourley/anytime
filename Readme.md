@@ -24,6 +24,7 @@ Options can be the following:
 - `offset` - number of pixels to offset the element top. Defaults to `5`
 - `initialValue` - value to set the date picker to. Defaults to `new Date()`
 - `format` - [moment-style](http://momentjs.com/docs/#/displaying/format/) date format string. Defaults to `'h:mma on dddd D MMMM YYYY'`
+- `timezone` - [moment-style](http://momentjs.com/timezone/) timezone string (e.g. 'Europe/London'). Defaults to current timezone
 
 #### `picker.render()` - Renders the date picker
 #### `picker.show()` - Shows the date picker

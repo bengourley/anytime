@@ -1,8 +1,7 @@
 module.exports = AnytimePicker
 
-var moment = require('moment')
+var moment = require('moment-timezone')
   , months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
-  // , days = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ]
   , Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
   , pad = require('pad-number')
@@ -18,6 +17,12 @@ var moment = require('moment')
       , format: 'h:mma on dddd D MMMM YYYY'
       }
 
+function createMoment(value) {
+  if (this.options.timezone) return moment.tz(value, this.options.timezone)
+
+  return moment(value)
+}
+
 function AnytimePicker(options) {
 
   this.options = extend({}, defaults, options)
@@ -31,10 +36,10 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
-  var initialValue = moment(this.options.initialValue)
+  var initialValue = createMoment.call(this, this.options.initialValue)
   this.currentView = { month: initialValue.month(), year: initialValue.year() }
 
-  this.value = moment(this.options.initialValue).seconds(0).milliseconds(0)
+  this.value = createMoment.call(this, this.options.initialValue).seconds(0).milliseconds(0)
 
   this.el.addEventListener('click', function (e) {
     if (classList(e.target).contains('js-anytime-picker-day')) {
@@ -49,8 +54,11 @@ function AnytimePicker(options) {
   this.el.addEventListener('click', function (e) { e.preventDefault() })
 
   this.on('change', function (value) {
-    if (value) value = moment(value).format(this.options.format)
-    this.options.input.value = value
+    if (!value) return
+    value = createMoment.call(this, value)
+    this.value = value
+    this.options.input.value = value.format(this.options.format)
+    this.updateDisplay()
   }.bind(this))
 
   this.__events['misc show'] = this.show.bind(this)
@@ -141,7 +149,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   }.bind(this))
 
   // Next month button
-  var nextBtn = createButton('>', [ 'anytime-picker__button', 'anytime-picker__button--prev' ])
+  var nextBtn = createButton('>', [ 'anytime-picker__button', 'anytime-picker__button--next' ])
   headerEl.appendChild(nextBtn)
   nextBtn.addEventListener('click', this.showNextMonth.bind(this))
 
@@ -187,10 +195,27 @@ AnytimePicker.prototype.updateDisplay = function () {
     daysEl.appendChild(blank)
   }
 
+  var currentDayOfMonth = +moment().format('D')
+    , isCurrentMonth = +moment().month() === this.currentView.month
+    , isCurrentYear = +moment().year() === this.currentView.year
+    , selectedDayOfMonth = +createMoment.call(this, this.value).format('D')
+    , isSelectedCurrentMonth = +createMoment.call(this, this.value).month() === this.currentView.month
+    , isSelectedCurrentYear = +createMoment.call(this, this.value).year() === this.currentView.year
+
   for (var y = 1; y <= monthDetails.length; y++) {
     var date = document.createElement('button')
     date.textContent = y
-    classList(date).add('anytime-picker__date', 'js-anytime-picker-day')
+    var cl = classList(date)
+    cl.add('anytime-picker__date', 'js-anytime-picker-day')
+
+    if (y === currentDayOfMonth && isCurrentMonth && isCurrentYear) {
+      cl.add('anytime-picker__date--current')
+    }
+
+    // Needs to add or remove because the current selected day can change
+    // within the current month and need to be cleared from others
+    cl[y === selectedDayOfMonth && isSelectedCurrentMonth && isSelectedCurrentYear ? 'add' : 'remove']('anytime-picker__date--selected')
+
     date.setAttribute('data-date', y)
     date.setAttribute('data-month', this.currentView.month)
     date.setAttribute('data-year', this.currentView.year)
@@ -275,12 +300,12 @@ AnytimePicker.prototype.showNextMonth = function () {
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
   var hourSelect = document.createElement('select')
-  classList(hourSelect).add('anytime-picker__dropdown')
+  classList(hourSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--hours')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
     hour.textContent = pad(i, 2)
-    if (moment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+    if (createMoment.call(this, this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
     hourSelect.appendChild(hour)
   }
 
@@ -302,7 +327,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
     minute.textContent = pad(j, 2)
-    if (moment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+    if (createMoment.call(this, this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
     minuteSelect.appendChild(minute)
   }
 
