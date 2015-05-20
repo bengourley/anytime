@@ -19,6 +19,7 @@ Stay tuned.
 
 Options can be the following:
 
+- `input` - DOM input element for displaying the date
 - `minYear` - minimum year. Defaults to `1960`
 - `maxYear` - maximum year. Defaults to `2030`
 - `offset` - number of pixels to offset the element top. Defaults to `5`
