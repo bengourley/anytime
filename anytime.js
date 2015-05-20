@@ -322,8 +322,8 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
   timeEl.appendChild(colonEl)
 
   var minuteSelect = document.createElement('select')
-  classList(minuteSelect).add('anytime-picker__dropdown')
-  for (var j = 0; j < 59; j++) {
+  classList(minuteSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--minutes')
+  for (var j = 0; j < 60; j++) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
     minute.textContent = pad(j, 2)
