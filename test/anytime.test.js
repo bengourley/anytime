@@ -186,4 +186,19 @@ describe('anytime', function () {
     })
   })
 
+  describe('minutes', function () {
+
+    it('should output 60 minutes', function () {
+      var Picker = require('../')
+        , parent = document.createElement('input')
+        , p = new Picker({ input: parent })
+
+      p.render()
+
+      var minutes = p.el.querySelector('.anytime-picker__dropdown--minutes')
+      assert.equal(minutes.length, 60)
+    })
+
+  })
+
 })
