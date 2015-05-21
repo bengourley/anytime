@@ -16,7 +16,7 @@
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test/simulate-browser-env",
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "prepublish": "npm test && npm prune",
-    "demo": "browserify -r ./anytime.js anytime > bundle.js && open demo.html"
+    "demo": "./node_modules/.bin/browserify -r ./anytime > bundle.js && open demo.html"
   },
   "author": "Ben Gourley",
   "license": "ISC",
