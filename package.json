@@ -16,7 +16,7 @@
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test/simulate-browser-env",
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "prepublish": "npm test && npm prune",
-    "demo": "browserify -r ./anytime ./anytime.js > bundle.js && open demo.html"
+    "demo": "browserify -r ./anytime.js anytime > bundle.js && open demo.html"
   },
   "author": "Ben Gourley",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "pad-number": "^0.0.1"
   },
   "devDependencies": {
+    "browserify": "^10.2.1",
     "istanbul": "^0.3.2",
     "jsdom": "^3.1.2",
     "jshint": "^2.5.6",
