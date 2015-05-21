@@ -201,4 +201,14 @@ describe('anytime', function () {
 
   })
 
+  it('should not throw when rendered with a null initialValue', function () {
+    var Picker = require('../')
+      , parent = document.createElement('input')
+      , p = new Picker({ input: parent, initialValue: null })
+
+    assert.doesNotThrow(function () {
+      p.render()
+    }, /setAttribute/)
+  })
+
 })

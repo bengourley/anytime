@@ -18,6 +18,7 @@ var moment = require('moment-timezone')
       }
 
 function createMoment(value) {
+  value = value !== null ? value : undefined
   if (this.options.timezone) return moment.tz(value, this.options.timezone)
 
   return moment(value)
