@@ -15,6 +15,8 @@ var moment = require('moment-timezone')
       , offset: 5
       , initialValue: new Date()
       , format: 'h:mma on dddd D MMMM YYYY'
+      , doneText: 'Done'
+      , clearText: 'Clear'
       }
 
 function createMoment(value) {
@@ -161,14 +163,14 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
   // 'Done' button
   var doneBtn = document.createElement('button')
   classList(doneBtn).add('anytime-picker__button', 'anytime-picker__button--done')
-  doneBtn.textContent = 'Done'
+  doneBtn.textContent = this.options.doneText
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', this.hide.bind(this))
 
   // 'Clear' button
   var clearBtn = document.createElement('button')
   classList(clearBtn).add('anytime-picker__button', 'anytime-picker__button--next')
-  clearBtn.textContent = 'Clear'
+  clearBtn.textContent = this.options.clearText
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
     this.emit('change', null)
