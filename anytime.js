@@ -17,6 +17,7 @@ var moment = require('moment-timezone')
       , format: 'h:mma on dddd D MMMM YYYY'
       , doneText: 'Done'
       , clearText: 'Clear'
+      , cb: function(){}
       }
 
 function createMoment(value) {
@@ -261,6 +262,9 @@ AnytimePicker.prototype.show = function () {
 }
 
 AnytimePicker.prototype.hide = function () {
+
+  // give selected value to callback as non moment object
+  this.options.cb(this.value.toString())
 
   classList(this.el).remove('anytime-picker--is-visible')
 
