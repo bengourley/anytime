@@ -168,7 +168,7 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', function () {
   	// give selected value to callback as non moment object
-  	this.options.cb(this.value.toString())
+  	this.options.cb(this.value.utc().toString())
   	this.hide()
   }.bind(this))
 
