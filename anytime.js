@@ -17,6 +17,7 @@ var moment = require('moment-timezone')
       , format: 'h:mma on dddd D MMMM YYYY'
       , doneText: 'Done'
       , clearText: 'Clear'
+      , cb: function(){}
       }
 
 function createMoment(value) {
@@ -165,7 +166,11 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
   classList(doneBtn).add('anytime-picker__button', 'anytime-picker__button--done')
   doneBtn.textContent = this.options.doneText
   footerEl.appendChild(doneBtn)
-  doneBtn.addEventListener('click', this.hide.bind(this))
+  doneBtn.addEventListener('click', function () {
+  	// give selected value to callback as non moment object
+  	this.options.cb(this.value.utc().toString())
+  	this.hide()
+  }.bind(this))
 
   // 'Clear' button
   var clearBtn = document.createElement('button')
@@ -174,6 +179,7 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
     this.emit('change', null)
+    this.options.cb(null)
     this.hide()
   }.bind(this))
 
