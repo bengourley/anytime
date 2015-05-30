@@ -98,7 +98,15 @@
       var DatePicker = require('/anytime')
         , time = document.getElementsByName('time')[0]
         , button = document.getElementsByClassName('js-datepicker')[0]
-        , d = new DatePicker({ input: time, button: button, anchor: button })
+        , d = new DatePicker({
+        	input: time,
+        	button: button,
+        	anchor: button,
+        	doneText: 'Set Time',
+        	cb: function(value) {
+        		console.log('selected time', value.toString())
+        	}
+        })
 
       d.render()
 
