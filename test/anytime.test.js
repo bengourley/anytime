@@ -211,4 +211,19 @@ describe('anytime', function () {
     }, /setAttribute/)
   })
 
+  it('should set "done" button text to provided option', function () {
+    var Picker = require('../')
+      , parent = document.createElement('input')
+      , p = new Picker({
+      	input: parent,
+      	initialValue: null ,
+      	doneText: 'Set Time'
+      })
+
+    p.render()
+
+    var button = p.el.querySelector('.anytime-picker__button--done')
+    assert.equal(button.textContent, 'Set Time')
+  })
+
 })

@@ -26,6 +26,9 @@ Options can be the following:
 - `initialValue` - value to set the date picker to. Defaults to `new Date()`
 - `format` - [moment-style](http://momentjs.com/docs/#/displaying/format/) date format string. Defaults to `'h:mma on dddd D MMMM YYYY'`
 - `timezone` - [moment-style](http://momentjs.com/timezone/) timezone string (e.g. 'Europe/London'). Defaults to current timezone
+- `doneText` - Content to use for the done button. Defaults to "Done"
+- `clearText` - Content to use for the clear button. Defaults to "Clear"
+- `cb` - Callback function which is given a UTC timestamp string on done button click or `null` on clear button click
 
 #### `picker.render()` - Renders the date picker
 #### `picker.show()` - Shows the date picker
