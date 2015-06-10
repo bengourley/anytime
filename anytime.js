@@ -1,7 +1,6 @@
 module.exports = AnytimePicker
 
-var moment = require('moment-timezone')
-  , Emitter = require('events').EventEmitter
+var Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
   , pad = require('pad-number')
   , getYearList = require('./lib/get-year-list')
@@ -14,19 +13,8 @@ var moment = require('moment-timezone')
       , offset: 5
       , initialValue: new Date()
       , format: 'h:mma on dddd D MMMM YYYY'
-      , moment: moment
+      , moment: null
       }
-
-function createMoment(value) {
-  value = value !== null ? value : undefined
-  var m
-  if (this.options.timezone) {
-    m = this.options.moment.tz(value, this.options.timezone)
-  } else {
-    m = this.options.moment(value)
-  }
-  return m
-}
 
 function AnytimePicker(options) {
 
@@ -41,10 +29,10 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
-  var initialValue = createMoment.call(this, this.options.initialValue)
+  var initialValue = this.createMoment(this.options.initialValue)
   this.currentView = { month: initialValue.month(), year: initialValue.year() }
 
-  this.value = createMoment.call(this, this.options.initialValue).seconds(0).milliseconds(0)
+  this.value = this.createMoment(this.options.initialValue).seconds(0).milliseconds(0)
   this.monthNames = this.value.localeData()._months
 
   this.el.addEventListener('click', function (e) {
@@ -61,7 +49,7 @@ function AnytimePicker(options) {
 
   this.on('change', function (value) {
     if (!value) return
-    value = createMoment.call(this, value)
+    value = this.createMoment(value)
     this.value = value
     this.options.input.value = value.format(this.options.format)
     this.updateDisplay()
@@ -76,6 +64,8 @@ function AnytimePicker(options) {
 }
 
 AnytimePicker.prototype = Object.create(Emitter.prototype)
+
+AnytimePicker.prototype.createMoment = require('./lib/moment')
 
 AnytimePicker.prototype.render = function () {
 
@@ -201,12 +191,12 @@ AnytimePicker.prototype.updateDisplay = function () {
     daysEl.appendChild(blank)
   }
 
-  var currentDayOfMonth = +moment().format('D')
-    , isCurrentMonth = +moment().month() === this.currentView.month
-    , isCurrentYear = +moment().year() === this.currentView.year
-    , selectedDayOfMonth = +createMoment.call(this, this.value).format('D')
-    , isSelectedCurrentMonth = +createMoment.call(this, this.value).month() === this.currentView.month
-    , isSelectedCurrentYear = +createMoment.call(this, this.value).year() === this.currentView.year
+  var currentDayOfMonth = +this.createMoment().format('D')
+    , isCurrentMonth = +this.createMoment().month() === this.currentView.month
+    , isCurrentYear = +this.createMoment().year() === this.currentView.year
+    , selectedDayOfMonth = +this.createMoment(this.value).format('D')
+    , isSelectedCurrentMonth = +this.createMoment(this.value).month() === this.currentView.month
+    , isSelectedCurrentYear = +this.createMoment(this.value).year() === this.currentView.year
 
   for (var y = 1; y <= monthDetails.length; y++) {
     var date = document.createElement('button')
@@ -311,7 +301,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
     hour.textContent = pad(i, 2)
-    if (createMoment.call(this, this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
     hourSelect.appendChild(hour)
   }
 
@@ -333,7 +323,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
     minute.textContent = pad(j, 2)
-    if (createMoment.call(this, this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
     minuteSelect.appendChild(minute)
   }
 

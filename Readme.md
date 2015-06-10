@@ -49,6 +49,7 @@ to `moment` and pass it in as an option like so:
 
 ```js
 var moment = require('moment')
+require('moment/locale/fr')
 moment.locale('fr')
 var picker = new Anytime({ moment: moment })
 ```
@@ -57,6 +58,7 @@ If you want timezone support, you must pass in a `moment-timezone` instance:
 
 ```js
 var moment = require('moment-timezone')
+require('moment/locale/fr')
 moment.locale('fr')
 moment.timezone('Europe/Paris') // Either set the timezone here…
 var picker = new Anytime({ moment: moment, timezone: 'Europe/Paris' }) // …or here
