@@ -14,6 +14,7 @@ var Emitter = require('events').EventEmitter
       , initialValue: new Date()
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: null
+      , minuteIncrement: 1
       }
 
 function AnytimePicker(options) {
@@ -319,7 +320,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
   var minuteSelect = document.createElement('select')
   classList(minuteSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--minutes')
-  for (var j = 0; j < 60; j++) {
+  for (var j = 0; j < 60; j += this.options.minuteIncrement) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
     minute.textContent = pad(j, 2)

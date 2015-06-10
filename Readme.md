@@ -27,6 +27,7 @@ Options can be the following:
 - `format` - [moment-style](http://momentjs.com/docs/#/displaying/format/) date format string. Defaults to `'h:mma on dddd D MMMM YYYY'`
 - `timezone` - [moment-style](http://momentjs.com/timezone/) timezone string (e.g. 'Europe/London'). Defaults to current timezone
 - `moment` - by default moment uses english. If you want to use a different language, load in a locale to moment and pass it in. See [the i18n section](#i18n) for more info.
+- `minuteIncrement` - defaults to 1 to show every minute. Set this to 5 or 15 etc to show fewer options at greater intervals.
 
 #### `picker.render()` - Renders the date picker
 #### `picker.show()` - Shows the date picker
