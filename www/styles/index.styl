@@ -1,0 +1,112 @@
+@css {
+  @import url(http://fonts.googleapis.com/css?family=Roboto:300,700,100,400);
+}
+
+@import '../../anytime.css'
+@import './skin'
+
+@import 'responsive-grid'
+
+grid-base()
+grid-widths('', 1 2 3 4 5 6)
+
+*
+  box-sizing border-box
+
+body
+  background-color #CB573E
+  color #FFFDDC
+  font 112.5%/1.7 'Roboto', sans-serif
+  font-weight 300
+
+.main-container
+  max-width 600px
+  margin 0 auto
+  padding 50px 0
+
+.main-title
+  text-align center
+  font-weight 100
+  text-transform uppercase
+  font-size 50px
+  text-shadow rgba(0, 0, 0, 0.2) 3px 3px
+
+.main-footer
+  padding 50px 0
+  text-align center
+
+.terminal
+  background #e3e3e3
+  border-radius .5em
+  padding-top 2.5em
+  position relative
+  margin 6em 0 3em
+
+.terminal:before
+.terminal:after
+.terminal__content:after
+  background #c8c8c8
+  border-radius 50%
+  content ''
+  height .75em
+  position absolute
+  top .85em
+  width .75em
+
+.terminal:before
+  left 1em
+
+.terminal:after
+  left 2.25em
+
+.terminal__content:after
+  left 3.5em
+
+.terminal__content
+  background #fff
+  border-radius 0 0 .5em .5em
+  color #000
+  display block
+  overflow scroll
+  padding 1em 1.5em
+
+.splash__image
+  text-align center
+
+.splash__input
+  width 100%
+  background-color #fff
+  border 3px solid #ddd
+  padding .5em
+  line-height 1.75em
+  margin 3em 0
+  border-radius .2em
+  position relative
+
+  input
+    border none
+    background transparent
+    font-size 1em
+    font-family 'Roboto', sans-serif
+    font-weight 300
+    width 100%
+
+  > button
+    position absolute
+    right .5em
+    border 0
+    background-color darken(#CB573E, 20%)
+    color #FFFDDC
+    font-family 'Roboto', sans-serif
+    font-weight 100
+    text-transform uppercase
+    padding .5em 1.2em
+    font-size .8em
+    border-radius .2em
+    cursor pointer
+
+    &:hover
+      background-color darken(#CB573E, 10%)
+
+.splash__prose
+  margin 5em 0

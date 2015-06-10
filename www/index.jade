@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    title Anytime – a JavaScript date and time picker
+    link(rel='stylesheet', href='/index.css')
+  body
+    .main-container
+      header.main-header
+        h1.main-title Anytime
+        .splash
+          .splash__input
+            input(type='text', disabled, placeholder='If not now, when?').js-splash-input
+            button.js-splash-button Select a time
+          .splash__prose
+            ul
+              li Say goodbye to jQuery UI!
+              li Modularity FTW!
+              li Only 4 lines of essential CSS (the rest is up to you)
+              li Use with browserify, AMD or standalone
+            pre.terminal: code.terminal__content $ npm i --save anytime
+      footer.main-footer
+        p Made by Ben Gourley at Clock.
+
+  script(src='/www/js/build.js')

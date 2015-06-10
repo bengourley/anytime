@@ -1,0 +1,122 @@
+//
+// ANYTIME DATE/TIME PICKER
+// ========================
+//
+
+$color--border = #ccc
+$color--white = #fff
+$base--border-radius = .3em
+$color--primary = #CB573E
+$color--black = #333
+$color--grey--light = #ddd
+
+.anytime-picker
+  display none
+  position absolute
+  width 240px
+  border 1px solid $color--border
+  background-color $color--white
+  padding 3px
+  border-radius $base--border-radius
+  z-index 100
+  color $color--black
+
+.anytime-picker--is-visible
+  display block
+
+.anytime-picker__dropdown
+.form-field .anytime-picker__dropdown // TODO remove this after form refactor
+  // @extend $control--text
+  height 34px
+  display inline-block
+  width auto
+  margin 0 3px
+
+.anytime-picker__dates .anytime-picker__day-name
+  font-size 13px
+  text-align center
+  padding 0
+
+.anytime-picker__dates
+  margin 3px 0
+  width auto
+  span
+  .anytime-picker__date
+    display inline-block
+    width (100 / 7)%
+    padding 6px 3px
+
+.anytime-picker__date
+  position relative
+  border 0
+  background $color--grey--light
+  color $color--black
+  text-align center
+  box-shadow inset 0 0 0 1px $color--white // Fake table cell borders
+  transition-property color, background-color
+  transition-duration 0.4s
+  transition-timing-function ease
+
+  &:hover
+  &:focus
+    outline 0
+    transition-duration 0.1s
+    background $color--primary
+    color $color--white
+
+.anytime-picker__header
+.anytime-picker__footer
+  padding 5px
+  text-align center
+
+  .anytime-picker__dropdown
+  .anytime-picker__button
+    margin 3px
+    vertical-align middle
+
+.anytime-picker__footer
+  background-color $color--grey--light
+
+  .anytime-picker__button
+    line-height 1em
+    font-size 13px
+
+.anytime-picker__time
+  padding 10px 0
+  text-align center
+
+  .anytime-picker__dropdown
+    width 30%
+
+.anytime-picker__button
+  position relative
+  display inline-block
+  vertical-align middle
+  cursor pointer
+  overflow visible // removes padding in IE
+  font-family inherit
+  font-weight normal
+  line-height 0.3
+  padding 7px 7px
+  text-align center
+  text-decoration none
+  transition all .3s ease
+  border-radius $base--border-radius
+  color $color--black
+  border 1px solid shade($color--grey--light, 10%)
+  background-color $color--grey--light
+  min-width 25px
+  font-family 'Roboto', sans-serif
+
+  &:focus
+  &:hover
+    text-decoration none
+    outline 0
+    transition-duration .1s
+    color $color--black
+    border-color shade($color--grey--light, 25%)
+    background-color shade($color--grey--light, 15%)
+
+  &:active
+    border-color shade($color--grey--light, 35%)
+    background-color shade($color--grey--light, 25%)
