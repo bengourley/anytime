@@ -41,6 +41,7 @@ function AnytimePicker(options) {
 
   this.el.addEventListener('click', function (e) {
     if (classList(e.target).contains('js-anytime-picker-day')) {
+      e.stopPropagation()
       this.update(function (value) {
         return value
           .date(parseInt(e.target.getAttribute('data-date'), 10))
@@ -53,9 +54,9 @@ function AnytimePicker(options) {
   // If the target element is within a form element this stops button clicks from submitting it
   this.el.addEventListener('click', function (e) { e.preventDefault() })
 
-  this.__events['misc show'] = this.show.bind(this)
-  if (this.options.button) this.options.button.addEventListener('click', this.__events['misc show'])
-  this.options.input.addEventListener('click', this.__events['misc show'])
+  this.__events['misc toggle'] = this.toggle.bind(this)
+  if (this.options.button) this.options.button.addEventListener('click', this.__events['misc toggle'])
+  this.options.input.addEventListener('click', this.__events['misc toggle'])
 
   this.root = this.options.anchor ? this.options.anchor : this.options.input
 
@@ -294,9 +295,16 @@ AnytimePicker.prototype.show = function () {
   this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
   this.el.style.left = (position.left + this.root.offsetWidth - this.el.offsetWidth) + 'px'
 
-  this.__events['doc escape keypress'] = function (e) {
+  this.__events['doc escape hide'] = function (e) {
     // Hide if escape is pressed
     if (e.keyCode === 27) this.hide()
+  }.bind(this)
+
+  this.__events['doc click hide'] = function (e) {
+    // Hide if document outside of anytime is clicked
+    if (e.target === this.el) return
+    if (this.el.contains(e.target)) return
+    this.hide()
   }.bind(this)
 
   this.__events['other anytime open'] = function (e) {
@@ -304,10 +312,12 @@ AnytimePicker.prototype.show = function () {
     if (e.detail.instance !== this) this.hide()
   }.bind(this)
 
-  document.addEventListener('keyup', this.__events['doc escape keypress'])
-  document.addEventListener('anytime::open', this.__events['other anytime open'])
-
-  document.dispatchEvent(new CustomEvent('anytime::open', { detail: { instance: this } }))
+  process.nextTick(function () {
+    document.addEventListener('keyup', this.__events['doc escape hide'])
+    document.addEventListener('click', this.__events['doc click hide'])
+    document.addEventListener('anytime::open', this.__events['other anytime open'])
+    document.dispatchEvent(new CustomEvent('anytime::open', { detail: { instance: this } }))
+  }.bind(this))
 
 }
 
@@ -315,14 +325,25 @@ AnytimePicker.prototype.hide = function () {
 
   classList(this.el).remove('anytime-picker--is-visible')
 
-  document.removeEventListener('keyup', this.__events['doc escape keypress'])
-  delete this.__events['doc escape keypress']
+  document.removeEventListener('keyup', this.__events['doc escape hide'])
+  delete this.__events['doc escape hide']
+
+  document.removeEventListener('click', this.__events['doc click hide'])
+  delete this.__events['doc click hide']
 
   document.removeEventListener('anytime::open', this.__events['other anytime open'])
-  delete this.__events['keyup escToClose']
+  delete this.__events['keyup other anytime open']
 
   if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
 
+}
+
+AnytimePicker.prototype.toggle = function () {
+  if (classList(this.el).contains('anytime-picker--is-visible')) {
+    this.hide()
+  } else {
+    this.show()
+  }
 }
 
 AnytimePicker.prototype.showPrevMonth = function () {
@@ -400,8 +421,8 @@ AnytimePicker.prototype.destroy = function () {
   this.hide()
   this.emit('destroy')
   this.removeAllListeners()
-  if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc show'])
-  this.options.input.removeEventListener('click', this.__events['misc show'])
-  delete this.__events['misc show']
+  if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc toggle'])
+  this.options.input.removeEventListener('click', this.__events['misc toggle'])
+  delete this.__events['misc toggle']
   this.el = null
 }

@@ -224,7 +224,7 @@ describe('anytime', function () {
 
       var Picker = require('../')
         , parent = document.createElement('input')
-        , p = new Picker({ input: parent, initialValue: null })
+        , p = new Picker({ input: parent, initialValue: new Date() })
 
       assert.equal('January', p.monthNames[0])
       assert.equal('en', p.value.locale())
@@ -239,7 +239,7 @@ describe('anytime', function () {
 
       moment.locale('fr')
 
-      var p = new Picker({ input: parent, initialValue: null, moment: moment })
+      var p = new Picker({ input: parent, initialValue: new Date(), moment: moment })
 
       assert.equal('janvier', p.monthNames[0])
       assert.equal('fr', p.value.locale())
