@@ -217,6 +217,19 @@ AnytimePicker.prototype.updateDisplay = function () {
    * Create the blank days ahead of the first day of the current month so that
    * the days appear in the corresponding columns of the days of the week
    */
+  function renderDayNames() {
+    this.options.moment.weekdaysMin().forEach(function (d) {
+      var dayName = document.createElement('span')
+      dayName.textContent = d
+      classList(dayName).add('anytime-picker__day-name')
+      daysEl.appendChild(dayName)
+    })
+  }
+
+  /*
+   * Create the blank days ahead of the first day of the current month so that
+   * the days appear in the corresponding columns of the days of the week
+   */
   function padDays() {
     for (var x = 1; x < monthDetails.startDay; x++) {
       var blank = document.createElement('span')
@@ -265,6 +278,7 @@ AnytimePicker.prototype.updateDisplay = function () {
     }
   }
 
+  renderDayNames.call(this)
   padDays.call(this)
   populateDays.call(this)
 
