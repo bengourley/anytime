@@ -13,7 +13,8 @@ var Emitter = require('events').EventEmitter
       { minYear: 1960
       , maxYear: 2030
       , offset: 5
-      , initialValue: new Date()
+      , initialValue: null
+      , initialView: new Date()
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: moment
       , minuteIncrement: 1
@@ -32,10 +33,10 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
-  var initialValue = this.createMoment(this.options.initialValue)
-  this.currentView = { month: initialValue.month(), year: initialValue.year() }
+  var initialView = this.createMoment(this.options.initialValue || this.options.initialView)
+  this.currentView = { month: initialView.month(), year: initialView.year() }
 
-  this.value = this.createMoment(this.options.initialValue).seconds(0).milliseconds(0)
+  this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
   this.monthNames = this.options.moment.months()
 
   this.el.addEventListener('click', function (e) {
@@ -58,10 +59,13 @@ function AnytimePicker(options) {
 
   this.root = this.options.anchor ? this.options.anchor : this.options.input
 
+  function updateInput() {
+    this.options.input.value = this.value ? this.value.format(this.options.format) : ''
+  }
+
   if (this.options.input) {
-    this.on('change', function () {
-      this.options.input.value = this.value ? this.value.format(this.options.format) : ''
-    }.bind(this))
+    updateInput.call(this)
+    this.on('change', updateInput.bind(this))
   }
 
 }
