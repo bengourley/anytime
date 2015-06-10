@@ -54,7 +54,7 @@ describe('anytime', function () {
 
       p.render()
 
-      p.emit('change', new Date(Date.UTC(2015, 4, 11, 0, 0, 0)))
+      p.update(new Date(Date.UTC(2015, 4, 11, 0, 0, 0)))
       assert.equal(parent.value, 'EDT')
     })
 
@@ -85,7 +85,7 @@ describe('anytime', function () {
         , date = moment().toDate()
 
       p.render()
-      p.emit('change', date)
+      p.update(date)
 
       var day = p.el.querySelector('button[data-date=\'' + date.getDate() + '\']')
 
@@ -99,8 +99,8 @@ describe('anytime', function () {
         , cls = 'anytime-picker__date--selected'
 
       p.render()
-      p.emit('change', moment('2015-04-10').toDate())
-      p.emit('change', moment('2015-04-12').toDate())
+      p.update(moment('2015-04-10').toDate())
+      p.update(moment('2015-04-12').toDate())
 
       var firstSelectedDay = p.el.querySelector('button[data-date=\'10\']')
         , secondSelectedDay = p.el.querySelector('button[data-date=\'12\']')

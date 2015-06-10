@@ -33,7 +33,8 @@ Options can be the following:
 #### `picker.show()` - Shows the date picker
 #### `picker.hide()` - Hides the date picker
 #### `picker.destroy()` - Destroys the date picker instance
-#### `picker.on('change', fn)` - when the user sets a new date value, the change event is emitted
+#### `picker.on('change', function (value) {})` - when the user sets a new date value, the change event is emitted
+#### `picker.update(function|Date|String)` - updates the internal date value and shows the update in corresponding views
 
 #### Internal API methods - you probably won't need these
 ##### `picker.renderHeader()` - Renders the header
@@ -42,6 +43,28 @@ Options can be the following:
 ##### `picker.updateDisplay()` - Updates the elements to reflect the internal date state
 ##### `picker.showPrevMonth()` - Shows the previous month
 ##### `picker.showNextMonth()` - Shows the next month
+
+
+### Updating the value
+
+There are 2 main ways you can update the value:
+
+1. Pass a value
+
+```js
+picker.update(new Date(2015, 4, 0)) // JS Date object
+picker.update('2015-06-10T12:16:47.997Z') // String
+picker.update(null) // Clear the value
+```
+
+2. Use a function to manipulate the internal moment object. The return value is used
+to set the new date so you **must** return the moment object!
+
+```js
+picker.update(function (m) {
+  return m.add(1, 'day') // increment the day
+})
+```
 
 ### i18n
 
