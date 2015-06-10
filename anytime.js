@@ -2,6 +2,7 @@ module.exports = AnytimePicker
 
 var Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
+  , throttle = require('lodash.throttle')
   , pad = require('pad-number')
   , classList = require('classlist')
   , moment = require('moment-timezone')
@@ -304,10 +305,7 @@ AnytimePicker.prototype.show = function () {
 
   classList(this.el).add('anytime-picker--is-visible')
 
-  var position = { top: this.root.offsetTop, left: this.root.offsetLeft }
-
-  this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
-  this.el.style.left = (position.left + this.root.offsetWidth - this.el.offsetWidth) + 'px'
+  this.updatePosition()
 
   this.__events['doc escape hide'] = function (e) {
     // Hide if escape is pressed
@@ -326,10 +324,16 @@ AnytimePicker.prototype.show = function () {
     if (e.detail.instance !== this) this.hide()
   }.bind(this)
 
+  this.__events['window resize position'] = throttle(function () {
+    // Update position when window is resized
+    this.updatePosition()
+  }.bind(this), 100)
+
   process.nextTick(function () {
     document.addEventListener('keyup', this.__events['doc escape hide'])
     document.addEventListener('click', this.__events['doc click hide'])
     document.addEventListener('anytime::open', this.__events['other anytime open'])
+    window.addEventListener('resize', this.__events['window resize position'])
     document.dispatchEvent(new CustomEvent('anytime::open', { detail: { instance: this } }))
   }.bind(this))
 
@@ -348,8 +352,17 @@ AnytimePicker.prototype.hide = function () {
   document.removeEventListener('anytime::open', this.__events['other anytime open'])
   delete this.__events['keyup other anytime open']
 
+  window.removeEventListener('resize', this.__events['window resize position'])
+  delete this.__events['window resize position']
+
   if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
 
+}
+
+AnytimePicker.prototype.updatePosition = function () {
+  var position = { top: this.root.offsetTop, left: this.root.offsetLeft }
+  this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
+  this.el.style.left = (position.left + this.root.offsetWidth - this.el.offsetWidth) + 'px'
 }
 
 AnytimePicker.prototype.toggle = function () {
