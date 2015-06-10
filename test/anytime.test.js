@@ -1,7 +1,14 @@
 var assert = require('assert')
   , moment = require('moment-timezone')
+  , createBrowserEnv = require('./browser-env')
 
 describe('anytime', function () {
+
+  beforeEach(createBrowserEnv)
+
+  // Clear the module cache for anytime so that it can be reloaded again.
+  // This is needed to test option defaults that are set in the module scope
+  beforeEach(function () { delete require.cache[require.resolve('../')] })
 
   describe('destroy()', function () {
 
@@ -75,12 +82,12 @@ describe('anytime', function () {
       var Picker = require('../')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
-        , date = moment('2015-05-13').toDate()
+        , date = moment().toDate()
 
       p.render()
       p.emit('change', date)
 
-      var day = p.el.querySelector('button[data-date=\'13\']')
+      var day = p.el.querySelector('button[data-date=\'' + date.getDate() + '\']')
 
       assert(day.getAttribute('class').indexOf('anytime-picker__date--selected') > -1, 'Should have a class on it')
     })
@@ -209,6 +216,36 @@ describe('anytime', function () {
     assert.doesNotThrow(function () {
       p.render()
     }, /setAttribute/)
+  })
+
+  describe('locale', function () {
+
+    it('should default to english', function () {
+
+      var Picker = require('../')
+        , parent = document.createElement('input')
+        , p = new Picker({ input: parent, initialValue: null })
+
+      assert.equal('January', p.monthNames[0])
+      assert.equal('en', p.value.locale())
+
+    })
+
+    it('should use a provided locale', function () {
+
+      var Picker = require('../')
+        , parent = document.createElement('input')
+        , moment = require('moment')
+
+      moment.locale('fr')
+
+      var p = new Picker({ input: parent, initialValue: null, moment: moment })
+
+      assert.equal('janvier', p.monthNames[0])
+      assert.equal('fr', p.value.locale())
+
+    })
+
   })
 
 })

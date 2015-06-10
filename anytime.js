@@ -1,7 +1,6 @@
 module.exports = AnytimePicker
 
 var moment = require('moment-timezone')
-  , months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]
   , Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
   , pad = require('pad-number')
@@ -15,13 +14,18 @@ var moment = require('moment-timezone')
       , offset: 5
       , initialValue: new Date()
       , format: 'h:mma on dddd D MMMM YYYY'
+      , moment: moment
       }
 
 function createMoment(value) {
   value = value !== null ? value : undefined
-  if (this.options.timezone) return moment.tz(value, this.options.timezone)
-
-  return moment(value)
+  var m
+  if (this.options.timezone) {
+    m = this.options.moment.tz(value, this.options.timezone)
+  } else {
+    m = this.options.moment(value)
+  }
+  return m
 }
 
 function AnytimePicker(options) {
@@ -41,6 +45,7 @@ function AnytimePicker(options) {
   this.currentView = { month: initialValue.month(), year: initialValue.year() }
 
   this.value = createMoment.call(this, this.options.initialValue).seconds(0).milliseconds(0)
+  this.monthNames = this.value.localeData()._months
 
   this.el.addEventListener('click', function (e) {
     if (classList(e.target).contains('js-anytime-picker-day')) {
@@ -118,7 +123,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   // Months
   var monthSelect = document.createElement('select')
   classList(monthSelect).add('js-anytime-picker-month', 'anytime-picker__dropdown')
-  months.forEach(function (month, i) {
+  this.monthNames.forEach(function (month, i) {
     var monthOption = document.createElement('option')
     monthOption.textContent = month
     if (i === this.currentView.month) monthOption.setAttribute('selected', true)
@@ -128,7 +133,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   this.monthSelect = monthSelect
 
   monthSelect.addEventListener('change', function (e) {
-    this.currentView.month = months.indexOf(e.target.value)
+    this.currentView.month = this.monthNames.indexOf(e.target.value)
     this.updateDisplay()
   }.bind(this))
 
