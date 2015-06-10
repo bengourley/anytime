@@ -49,7 +49,7 @@ Options can be the following:
 
 There are 2 main ways you can update the value:
 
-1. Pass a value
+#### 1. Pass a value
 
 ```js
 picker.update(new Date(2015, 4, 0)) // JS Date object
@@ -57,8 +57,9 @@ picker.update('2015-06-10T12:16:47.997Z') // String
 picker.update(null) // Clear the value
 ```
 
-2. Use a function to manipulate the internal moment object. The return value is used
-to set the new date so you **must** return the moment object!
+#### 2. Use a function to manipulate the internal moment object
+
+The return value is used to set the new date so you **must** return the moment object!
 
 ```js
 picker.update(function (m) {
