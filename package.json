@@ -15,8 +15,7 @@
     "pretest": "npm run-script lint",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test",
     "posttest": "istanbul check-coverage && rm -rf coverage",
-    "prepublish": "npm test && npm prune",
-    "demo": "./node_modules/.bin/browserify -r ./anytime > bundle.js && open demo.html"
+    "prepublish": "npm test && npm prune"
   },
   "author": "Ben Gourley",
   "license": "ISC",
@@ -24,7 +23,7 @@
     "classlist": "^1.0.1",
     "lodash.assign": "*",
     "lodash.throttle": "*",
-    "moment-timezone": "^0.3.1",
+    "moment": "^2.10.3",
     "pad-number": "^0.0.1"
   },
   "devDependencies": {
@@ -34,6 +33,7 @@
     "jshint": "^2.5.6",
     "jshint-full-path": "^1.1.1",
     "mocha": "^1.21.5",
-    "moment": "^2.10.3"
+    "moment-timezone": "^0.3.1",
+    "uglify-js": "^2.4.23"
   }
 }

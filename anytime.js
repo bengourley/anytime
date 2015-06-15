@@ -5,7 +5,7 @@ var Emitter = require('events').EventEmitter
   , throttle = require('lodash.throttle')
   , pad = require('pad-number')
   , classList = require('classlist')
-  , moment = require('moment-timezone')
+  , moment = require('moment')
   , getYearList = require('./lib/get-year-list')
   , createButton = require('./lib/create-button')
   , getMonthDetails = require('./lib/get-month-details')
@@ -27,8 +27,7 @@ function AnytimePicker(options) {
 
   Emitter.call(this)
 
-  // A place to store references to event callback functions
-  // so they can be specifically unbound later on
+  // A place to store references to event callback functions so they can be specifically unbound later on
   this.__events = {}
 
   this.el = document.createElement('div')
@@ -61,13 +60,9 @@ function AnytimePicker(options) {
 
   this.root = this.options.anchor ? this.options.anchor : this.options.input
 
-  function updateInput() {
-    this.options.input.value = this.value ? this.value.format(this.options.format) : ''
-  }
-
   if (this.options.input) {
-    updateInput.call(this)
-    this.on('change', updateInput.bind(this))
+    this.updateInput(this)
+    this.on('change', this.updateInput.bind(this))
   }
 
 }
@@ -75,6 +70,10 @@ function AnytimePicker(options) {
 AnytimePicker.prototype = Object.create(Emitter.prototype)
 
 AnytimePicker.prototype.createMoment = createMoment
+
+AnytimePicker.prototype.updateInput = function () {
+  this.options.input.value = this.value ? this.value.format(this.options.format) : ''
+}
 
 AnytimePicker.prototype.update = function (update) {
 

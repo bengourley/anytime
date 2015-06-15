@@ -26,8 +26,8 @@ Options can be the following:
 - `initialValue` - value to set the date picker to. Defaults to `null`.
 - `initialView` - value to indicate which month/year to display when picker is shown. Defaults to `new Date()`. If `initialValue` is selected, that will take precedence.
 - `format` - [moment-style](http://momentjs.com/docs/#/displaying/format/) date format string. Defaults to `'h:mma on dddd D MMMM YYYY'`
+- `moment` - by default anytime uses an instance of moment in the browser’s timezone with the english locale. If you want to use a different language or a different timezone, you must load in a locale to moment and pass it in.
 - `timezone` - [moment-style](http://momentjs.com/timezone/) timezone string (e.g. 'Europe/London'). Defaults to current timezone.
-- `moment` - by default moment uses english. If you want to use a different language, load in a locale to moment and pass it in. See [the i18n section](#i18n) for more info.
 - `minuteIncrement` - defaults to 1 to show every minute. Set this to 5 or 15 etc to show fewer options at greater intervals.
 
 #### `picker.render()` - Renders the date picker
@@ -86,11 +86,9 @@ If you want timezone support, you must pass in a `moment-timezone` instance:
 var moment = require('moment-timezone')
 require('moment/locale/fr')
 moment.locale('fr')
-moment.timezone('Europe/Paris') // Either set the timezone here…
-var picker = new Anytime({ moment: moment, timezone: 'Europe/Paris' }) // …or here
+moment.timezone('Europe/Paris') // Set the timezone on moment…
+var picker = new Anytime({ moment: moment })
 ```
-
-If you pass in a normal `moment` object, specifying a timezone will not work.
 
 ## Credits
 * [Ben Gourley](https://github.com/bengourley/)
