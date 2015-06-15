@@ -194,6 +194,15 @@ body {
   text-transform: uppercase;
   font-size: 50px;
   text-shadow: rgba(0,0,0,0.2) 3px 3px;
+  margin-bottom: 0px;
+}
+.subtitle {
+  text-align: center;
+  font-weight: 100;
+  text-transform: uppercase;
+  font-size: 15px;
+  margin-top: 0px;
+  margin-bottom: 80px;
 }
 .main-footer {
   padding: 50px 0;
@@ -202,7 +211,7 @@ body {
 .terminal {
   background: #e3e3e3;
   border-radius: 0.5em;
-  padding-top: 2.5em;
+  padding-top: 2.3em;
   position: relative;
   margin: 6em 0 3em;
 }
@@ -287,4 +296,18 @@ body {
 }
 .splash__prose {
   margin: 5em 0;
+}
+pre {
+  font-family: 'Consolas', monospace;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.code-sample {
+  background-color: #fffddc;
+  color: #cb573e;
+  padding: 1em;
+}
+p code {
+  background-color: rgba(255,253,220,0.1);
+  padding: 5px 3px;
 }

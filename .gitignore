@@ -2,3 +2,4 @@ node_modules
 coverage
 .zuulrc
 bundle.js
+.DS_Store
