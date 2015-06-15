@@ -46,8 +46,10 @@ describe('anytime', function () {
     it('should allow you to pass in a timezone which modifies all displayed dates', function () {
       var Picker = require('../')
         , parent = document.createElement('input')
+        , moment = require('moment-timezone')
         , p = new Picker(
           { input: parent
+          , moment: moment
           , timezone: 'America/New_York'
           , format: 'z'
           })
@@ -63,8 +65,10 @@ describe('anytime', function () {
       var Picker = require('../')
         , parent = document.createElement('input')
         , date = new Date(Date.UTC(2015, 4, 11, 9, 0, 0))
+        , moment = require('moment-timezone')
         , p = new Picker(
           { input: parent
+          , moment: moment
           , timezone: 'America/New_York'
           , format: 'z'
           , initialValue: date
