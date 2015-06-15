@@ -20,6 +20,7 @@ $color--grey--light = #ddd
   border-radius $base--border-radius
   z-index 100
   color $color--black
+  line-height 1
 
 .anytime-picker--is-visible
   display block
@@ -33,9 +34,9 @@ $color--grey--light = #ddd
   margin 0 3px
 
 .anytime-picker__dates .anytime-picker__day-name
-  font-size 13px
+  font-size 11px
   text-align center
-  padding 0
+  padding-bottom 0
 
 .anytime-picker__dates
   margin 3px 0
@@ -56,6 +57,7 @@ $color--grey--light = #ddd
   transition-property color, background-color
   transition-duration 0.4s
   transition-timing-function ease
+  cursor pointer
 
   &:hover
   &:focus
@@ -96,8 +98,8 @@ $color--grey--light = #ddd
   overflow visible // removes padding in IE
   font-family inherit
   font-weight normal
-  line-height 0.3
-  padding 7px 7px
+  line-height 0.4
+  padding 6px 7px
   text-align center
   text-decoration none
   transition all .3s ease

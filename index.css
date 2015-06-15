@@ -11,6 +11,7 @@
   border-radius: 0.3em;
   z-index: 100;
   color: #333;
+  line-height: 1;
 }
 .anytime-picker--is-visible {
   display: block;
@@ -23,9 +24,9 @@
   margin: 0 3px;
 }
 .anytime-picker__dates .anytime-picker__day-name {
-  font-size: 13px;
+  font-size: 11px;
   text-align: center;
-  padding: 0;
+  padding-bottom: 0;
 }
 .anytime-picker__dates {
   margin: 3px 0;
@@ -47,6 +48,7 @@
   transition-property: color, background-color;
   transition-duration: 0.4s;
   transition-timing-function: ease;
+  cursor: pointer;
 }
 .anytime-picker__date:hover,
 .anytime-picker__date:focus {
@@ -89,8 +91,8 @@
   overflow: visible;
   font-family: inherit;
   font-weight: normal;
-  line-height: 0.3;
-  padding: 7px 7px;
+  line-height: 0.4;
+  padding: 6px 7px;
   text-align: center;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -235,10 +237,22 @@ body {
 .splash__image {
   text-align: center;
 }
+::-webkit-input-placeholder {
+  color: #fff;
+}
+:-moz-placeholder {
+  color: #fff;
+}
+::-moz-placeholder {
+  color: #fff;
+}
+:-ms-input-placeholder {
+  color: #fff;
+}
 .splash__input {
   width: 100%;
-  background-color: #fff;
-  border: 3px solid #ddd;
+  background-color: rgba(255,255,255,0.2);
+  border: 3px solid rgba(255,255,255,0.3);
   padding: 0.5em;
   line-height: 1.75em;
   margin: 3em 0;
@@ -252,6 +266,7 @@ body {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   width: 100%;
+  color: #fff;
 }
 .splash__input > button {
   position: absolute;
