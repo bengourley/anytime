@@ -306,6 +306,7 @@ h5 a:hover {
   font-size: 0.8em;
   border-radius: 0.2em;
   cursor: pointer;
+  line-height: 1;
 }
 .splash__input > button:hover {
   background-color: #bc4b33;

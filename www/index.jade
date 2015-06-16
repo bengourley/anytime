@@ -167,8 +167,28 @@ html
           })
 
         h3: a(id='destroy', href='#destroy') p.destroy()
-        p Removes all event listeners and removes the picker interface element from the DOM. 
+        p Removes all event listeners and removes the picker interface element from the DOM.
 
+        h2: a(id='examples', href='#examples') Examples
+
+        h3: a(id='i18n', href='#i18n') i18n
+        p.
+          To use anytime in a language other than the default (English) you need to load in your desired locale
+          to <code>moment</code> and pass it in as an option like so:
+
+        pre.code-sample: code.
+          var moment = require('moment')
+          require('moment/locale/fr')
+          moment.locale('fr')
+          var picker = new Anytime({ moment: moment })
+
+        p If you want timezone support, you must pass in a <code>moment-timezone</code> instance and set the timezone option:
+
+        pre.code-sample: code.
+          var moment = require('moment-timezone')
+          require('moment/locale/fr')
+          moment.locale('fr')
+          var picker = new Anytime({ moment: moment, timezone: 'Europe/Paris' })
 
       footer.main-footer
         p Made by Ben Gourley at <a href='http://www.clock.co.uk/'>Clock</a>.
