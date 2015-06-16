@@ -183,8 +183,25 @@ body {
   font: 112.5%/1.7 'Roboto', sans-serif;
   font-weight: 300;
 }
+a {
+  color: #fffddc;
+}
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a {
+  text-decoration: none;
+}
+h1 a:hover,
+h2 a:hover,
+h3 a:hover,
+h4 a:hover,
+h5 a:hover {
+  text-decoration: underline;
+}
 .main-container {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 50px 0;
 }
@@ -306,8 +323,35 @@ pre {
   background-color: #fffddc;
   color: #cb573e;
   padding: 1em;
+  overflow: auto;
 }
-p code {
+p code,
+tr code {
   background-color: rgba(255,253,220,0.1);
   padding: 5px 3px;
+}
+table {
+  font-size: 0.8em;
+  border: none;
+  display: block;
+  overflow: auto;
+}
+td {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-image: none;
+  padding: 0.5em;
+}
+thead td {
+  border-bottom: 1px solid #fffddc;
+  border-collapse: collapse;
+  font-weight: bold;
+}
+tbody td {
+  max-width: 20%;
+  border-bottom: 1px solid rgba(255,253,220,0.1);
 }

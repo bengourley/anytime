@@ -18,35 +18,158 @@ html
               li Modularity FTW!
               li Only 4 lines of essential CSS (the rest is up to you)
               li Use with browserify, AMD or standalone
+
             pre.terminal: code.terminal__content $ npm i --save anytime
       .docs
-        h1 Usage
+        h1: a(id='usage', href='#usage') Usage
 
-        h2 Browserify
-
-        p This is the recommended and best supported way to use Anytime. Install anytime with npm and require it like so:
+        p The only supported way of using anytime is with browserify.
 
         pre.code-sample: code.
           var Picker = require('anytime')
+
+        p.
+          <a href="https://github.com/bengourley/anytime/blob/master/anytime.css">Here’s
+          the minimum CSS required</a> to get anytime functional. It’ll look pretty bare
+          and I’m sure you’ll want to style it up. There are plenty of classes on each
+          component that you can hook into for styling.
+
+
+
+        h2: a(id='constructor', href='#constructor') Creating a date/time picker:
+        pre.code-sample: code.
+          var p = new Picker(options)
+
+        h3: a(id='options', href='#options') Options
+        table(cellpadding='0' cellspacing='0')
+          thead
+            tr
+              td Name
+              td Type
+              td Description
+              td Default
+          
+          tbody
+
+            tr
+              td: code input
+              td HTMLInputElement
+              td: p An input whose value should update when the picker’s value changes.
+              td: code null
+
+            tr
+              td: code anchor
+              td HTMLElement
+              td: p An element that the picker will orient itself near when displayed. If <code>options.input</code> is not provided, this option is required.
+              td: code options.input
+
+            tr
+              td: code button
+              td HTMLElement
+              td: p An element that when clicked will show/hide the picker interface.
+              td: code null
+
+            tr
+              td: code minYear
+              td Number
+              td: p The earliest year that can be shown or selected in the picker interface.
+              td: code 1960
+              td
+
+            tr
+              td: code maxYear
+              td Number
+              td: p The latest year that can be shown or selected in the picker interface.
+              td: code 2030
+
+            tr
+              td: code minuteIncrement
+              td Number
+              td: p By default anytime will show every minute. Set this to 5 or 15 etc to show fewer options at greater intervals.
+              td: code 1
+
+            tr
+              td: code offset
+              td Number
+              td: p The distance (px) from <code>options.anchor</code> the picker interface should be displayed.
+              td: code 5
+
+            tr
+              td: code initialValue
+              td Date
+              td: p The initial value to set the picker’s internal value.
+              td: code null
+
+            tr
+              td: code initialView
+              td Date
+              td: p Value to indicate which month/year to display when picker is first shown. If <code>options.initialValue</code> is selected, that will take precedence.
+              td: code new Date()
+
+            tr
+              td: code format
+              td String
+              td: p moment-style date format string.
+              td: code 'h:mma on dddd D MMMM YYYY'
+
+            tr
+              td: code moment
+              td <code>moment</code>, <code>moment-timezone</code>
+              td: p By default anytime uses an instance of moment in the browser’s timezone with the English locale. If you want to use a different language or a different timezone, you must load in a locale to <code>moment</code> and/or pass in a version of <code>moment-timezone</code>.
+              td: code moment
+
+            tr
+              td: code timezone
+              td String
+              td: p moment-style timezone string (e.g. 'Europe/London'). <strong>Only functions if <code>moment-timezone</code> is provided as <code>options.moment</code>!</strong>
+              td Browser’s timezone
+
+        h2: a(id='api', href='#api') API
+
+        h3: a(id='render', href='#render') p.render()
+        p Renders the picker interface. This method must be called before <code>p.show()</code> is called.
+
+        h3: a(id='show', href='#show') p.show()
+        p Displays the picker interface.
+
+        h3: a(id='hide', href='#hide') p.hide()
+        p Removes the picker interface from display.
+
+        h3: a(id='toggle', href='#toggle') p.toggle()
+        p Shows the picker if it is currently hidden, hides it if currently displayed.
+
+        h3: a(id='update', href='#update') p.update(value or fn)
+        p Update the internal value of the picker. This will also update the related input (if there is one).
+        p There are two ways to update the value:
+
+        h4: a(id='update-value', href='#update-value') Pass a value
+        pre.code-sample: code.
+          p.update(new Date(2015, 4, 0)) // JS Date object
+          p.update('2015-06-10T12:16:47.997Z') // String
+          p.update(null) // Clear the value
+
+        h4: a(id='update-fn', href='#update-fn') Use a function to manipulate the internal moment object
+        p The return value is used to set the new date so you must return the moment object!
+        pre.code-sample: code.
+          picker.update(function (m) {
+            return m.add(1, 'day') // increment the day
+          })
+
+        h3: a(id='change', href='#change') p.on('change', fn)
+        p When a value is selected (or cleared) with the picker, the change event will emit with the new value.
         
-        h2 AMD
+        pre.code-sample: code.
+          p.on('change', function (d) {
+            // When set, d will be a date
+            // When cleared d will be null
+            console.log('The new date/time is…', d)
+          })
 
-        p If you’re an AMD user, luckily browserify makes it easy for me to export a UMD version of the module. Go grab the <code>anytime.standalone.js</code> file from the repo.
+        h3: a(id='destroy', href='#destroy') p.destroy()
+        p Removes all event listeners and removes the picker interface element from the DOM. 
 
-        pre.code-sample: code
-          ='<script src="anytime.standalone.js"></script>'
-
-        h2 Browser Global
-
-        p Yes it’s evil but I’ll let you do it. Here's how to use anytime as a global…
-
-        pre.code-sample: code
-          ='<script src="anytime.standalone.js"></script>\n'
-          ='<script>\n'
-          |   var Picker = window.anytime
-          ='\n</script>'
 
       footer.main-footer
-        p Made by Ben Gourley at Clock.
+        p Made by Ben Gourley at <a href='http://www.clock.co.uk/'>Clock</a>.
 
   script(src='./www/js/build.js')

@@ -19,8 +19,22 @@ body
   font 112.5%/1.7 'Roboto', sans-serif
   font-weight 300
 
+a
+  color #FFFDDC
+
+h1
+h2
+h3
+h4
+h5
+  a
+    text-decoration none
+
+    &:hover
+      text-decoration underline
+
 .main-container
-  max-width 600px
+  max-width 700px
   margin 0 auto
   padding 50px 0
 
@@ -142,8 +156,35 @@ pre
   background-color #FFFDDC
   color #CB573E
   padding 1em
+  overflow auto
 
-p code
-  background-color rgba(#FFFDDC, 0.1)
-  padding 5px 3px
+p
+tr
+  code
+    background-color rgba(#FFFDDC, 0.1)
+    padding 5px 3px
 
+table
+  font-size .8em
+  border none
+  display block
+  overflow auto
+
+td
+  margin 0
+  padding 0
+  background none
+  border none
+  border-collapse collapse
+  border-spacing 0
+  background-image none
+  padding .5em
+
+thead td
+  border-bottom 1px solid #FFFDDC
+  border-collapse collapse
+  font-weight bold
+
+tbody td
+  max-width 20%
+  border-bottom 1px solid rgba(#FFFDDC, 0.1)
