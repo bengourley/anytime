@@ -250,6 +250,24 @@ describe('anytime', function () {
 
     })
 
+    it('should set "done" and "clear" button text to provided option', function () {
+      var Picker = require('../')
+        , parent = document.createElement('input')
+        , p = new Picker({
+          input: parent,
+          initialValue: null ,
+          doneText: 'Set Time',
+          clearText: 'Goodbye'
+        })
+
+      p.render()
+
+      var doneButton = p.el.querySelector('.anytime-picker__button--done')
+      assert.equal(doneButton.textContent, 'Set Time', 'should set done button text')
+      var clearButton = p.el.querySelector('.anytime-picker__button--clear')
+      assert.equal(clearButton.textContent, 'Goodbye', 'should set clear button text')
+    })
+
   })
 
 })

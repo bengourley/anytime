@@ -19,6 +19,8 @@ var Emitter = require('events').EventEmitter
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: moment
       , minuteIncrement: 1
+      , doneText: 'Done'
+      , clearText: 'Clear'
       }
 
 function AnytimePicker(options) {
@@ -185,14 +187,14 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
   // 'Done' button
   var doneBtn = document.createElement('button')
   classList(doneBtn).add('anytime-picker__button', 'anytime-picker__button--done')
-  doneBtn.textContent = 'Done'
+  doneBtn.textContent = this.options.doneText
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', this.hide.bind(this))
 
   // 'Clear' button
   var clearBtn = document.createElement('button')
-  classList(clearBtn).add('anytime-picker__button', 'anytime-picker__button--next')
-  clearBtn.textContent = 'Clear'
+  classList(clearBtn).add('anytime-picker__button', 'anytime-picker__button--clear')
+  clearBtn.textContent = this.options.clearText
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
     this.update(null)
