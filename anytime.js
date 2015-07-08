@@ -446,7 +446,7 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
 
     var minuteSlider = document.createElement('input')
-    classList(hourSlider).add('anytime-picker__slider', 'anytime-picker__slider--minutes')
+    classList(minuteSlider).add('anytime-picker__slider', 'anytime-picker__slider--minutes')
     minuteSlider.type = 'range'
     minuteSlider.min = 0
     minuteSlider.max = 59
