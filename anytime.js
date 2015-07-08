@@ -402,47 +402,112 @@ AnytimePicker.prototype.showNextMonth = function () {
 
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 
-  var hourSelect = document.createElement('select')
-  classList(hourSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--hours')
-  for (var i = 0; i < 24; i++) {
-    var hour = document.createElement('option')
-    hour.setAttribute('value', i)
-    hour.textContent = pad(i, 2)
-    if (this.createMoment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
-    hourSelect.appendChild(hour)
+  if (this.options.timeSliders) {
+    var timeLabelEl = document.createElement('p')
+    classList(timeLabelEl).add('anytime-picker__time-label')
+
+    var timeLabelHourEl = document.createElement('span')
+    classList(timeLabelHourEl).add('anytime-picker__time-label--hour')
+    timeLabelEl.appendChild(timeLabelHourEl)
+    timeLabelHourEl.textContent = pad(this.createMoment(this.options.initialValue).hours(), 2)
+
+    var colonEl = document.createElement('span')
+    classList(colonEl).add('anytime-picker__time-separator')
+    colonEl.textContent = ':'
+    timeLabelEl.appendChild(colonEl)
+
+    var timeLabelMinuteEl = document.createElement('span')
+    classList(timeLabelMinuteEl).add('anytime-picker__time-label--minute')
+    timeLabelEl.appendChild(timeLabelMinuteEl)
+    timeLabelMinuteEl.textContent = pad(this.createMoment(this.options.initialValue).minutes(), 2)
+
+    timeEl.appendChild(timeLabelEl)
+
+
+    var hourSlider = document.createElement('input')
+    classList(hourSlider).add('anytime-picker__slider', 'anytime-picker__slider--hours')
+    hourSlider.type = 'range'
+    hourSlider.min = 0
+    hourSlider.max = 24
+    hourSlider.value = this.createMoment(this.options.initialValue).hours()
+
+    var updateHour = function (e) {
+      this.update(function (value) {
+        return value.hours(e.target.value)
+      })
+
+      timeLabelHourEl.textContent = pad(e.target.value, 2)
+    };
+
+    hourSlider.addEventListener('change', updateHour.bind(this))
+    hourSlider.addEventListener('input', updateHour.bind(this))
+
+    timeEl.appendChild(hourSlider)
+
+
+    var minuteSlider = document.createElement('input')
+    classList(hourSlider).add('anytime-picker__slider', 'anytime-picker__slider--minutes')
+    minuteSlider.type = 'range'
+    minuteSlider.min = 0
+    minuteSlider.max = 59
+    minuteSlider.value = this.createMoment(this.options.initialValue).minutes()
+
+    var updateMinute = function (e) {
+      this.update(function (value) {
+        return value.minutes(e.target.value)
+      })
+
+      timeLabelMinuteEl.textContent = pad(e.target.value, 2)
+    };
+
+    minuteSlider.addEventListener('change', updateMinute.bind(this))
+    minuteSlider.addEventListener('input', updateMinute.bind(this))
+
+    timeEl.appendChild(minuteSlider)
+
+  } else {
+
+    var hourSelect = document.createElement('select')
+    classList(hourSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--hours')
+    for (var i = 0; i < 24; i++) {
+      var hour = document.createElement('option')
+      hour.setAttribute('value', i)
+      hour.textContent = pad(i, 2)
+      if (this.createMoment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+      hourSelect.appendChild(hour)
+    }
+
+    hourSelect.addEventListener('change', function (e) {
+      this.update(function (value) {
+        return value.hours(e.target.value)
+      })
+    }.bind(this))
+
+    timeEl.appendChild(hourSelect)
+
+    var colonEl = document.createElement('span')
+    classList(colonEl).add('anytime-picker__time-separator')
+    colonEl.textContent = ':'
+    timeEl.appendChild(colonEl)
+
+    var minuteSelect = document.createElement('select')
+    classList(minuteSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--minutes')
+    for (var j = 0; j < 60; j += this.options.minuteIncrement) {
+      var minute = document.createElement('option')
+      minute.setAttribute('value', j)
+      minute.textContent = pad(j, 2)
+      if (this.createMoment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+      minuteSelect.appendChild(minute)
+    }
+
+    minuteSelect.addEventListener('change', function (e) {
+      this.update(function (value) {
+        return value.minutes(e.target.value)
+      })
+    }.bind(this))
+
+    timeEl.appendChild(minuteSelect)
   }
-
-  hourSelect.addEventListener('change', function (e) {
-    this.update(function (value) {
-      return value.hours(e.target.value)
-    })
-  }.bind(this))
-
-  timeEl.appendChild(hourSelect)
-
-  var colonEl = document.createElement('span')
-  classList(colonEl).add('anytime-picker__time-separator')
-  colonEl.textContent = ':'
-  timeEl.appendChild(colonEl)
-
-  var minuteSelect = document.createElement('select')
-  classList(minuteSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--minutes')
-  for (var j = 0; j < 60; j += this.options.minuteIncrement) {
-    var minute = document.createElement('option')
-    minute.setAttribute('value', j)
-    minute.textContent = pad(j, 2)
-    if (this.createMoment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
-    minuteSelect.appendChild(minute)
-  }
-
-  minuteSelect.addEventListener('change', function (e) {
-    this.update(function (value) {
-      return value.minutes(e.target.value)
-    })
-  }.bind(this))
-
-  timeEl.appendChild(minuteSelect)
-
 }
 
 AnytimePicker.prototype.destroy = function () {
