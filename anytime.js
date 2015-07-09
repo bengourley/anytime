@@ -21,6 +21,7 @@ var Emitter = require('events').EventEmitter
       , minuteIncrement: 1
       , doneText: 'Done'
       , clearText: 'Clear'
+      , timeSliders: false
       }
 
 function AnytimePicker(options) {
