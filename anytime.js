@@ -290,6 +290,13 @@ AnytimePicker.prototype.updateDisplay = function () {
     this.dateContainer.appendChild(child)
   }.bind(this))
 
+  if (this.value) {
+    // Set hours
+    this.el.querySelector('.anytime-picker__dropdown--hours').value = this.value.hour()
+
+    // Set minutes
+    this.el.querySelector('.anytime-picker__dropdown--minutes').value = this.value.minute()
+  }
 }
 
 AnytimePicker.prototype.getCurrentSelection = function () {
