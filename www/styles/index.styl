@@ -1,0 +1,191 @@
+@css {
+  @import url(http://fonts.googleapis.com/css?family=Roboto:300,700,100,400);
+}
+
+@import '../../anytime.css'
+@import './skin'
+
+@import 'responsive-grid'
+
+grid-base()
+grid-widths('', 1 2 3 4 5 6)
+
+*
+  box-sizing border-box
+
+body
+  background-color #CB573E
+  color #FFFDDC
+  font 112.5%/1.7 'Roboto', sans-serif
+  font-weight 300
+
+a
+  color #FFFDDC
+
+h1
+h2
+h3
+h4
+h5
+  a
+    text-decoration none
+
+    &:hover
+      text-decoration underline
+
+.main-container
+  max-width 700px
+  margin 0 auto
+  padding 50px 0
+
+.main-title
+  text-align center
+  font-weight 100
+  text-transform uppercase
+  font-size 50px
+  text-shadow rgba(0, 0, 0, 0.2) 3px 3px
+  margin-bottom 0px
+
+.subtitle
+  text-align center
+  font-weight 100
+  text-transform uppercase
+  font-size 15px
+  margin-top 0px
+  margin-bottom 80px
+
+.main-footer
+  padding 50px 0
+  text-align center
+
+.terminal
+  background #e3e3e3
+  border-radius .5em
+  padding-top 2.3em
+  position relative
+  margin 6em 0 3em
+
+.terminal:before
+.terminal:after
+.terminal__content:after
+  background #c8c8c8
+  border-radius 50%
+  content ''
+  height .75em
+  position absolute
+  top .85em
+  width .75em
+
+.terminal:before
+  left 1em
+
+.terminal:after
+  left 2.25em
+
+.terminal__content:after
+  left 3.5em
+
+.terminal__content
+  background #fff
+  border-radius 0 0 .5em .5em
+  color #000
+  display block
+  overflow scroll
+  padding 1em 1.5em
+
+.splash__image
+  text-align center
+
+::-webkit-input-placeholder
+   color #fff
+
+:-moz-placeholder
+   color #fff
+
+::-moz-placeholder
+ color #fff
+
+:-ms-input-placeholder
+ color #fff
+
+.splash__input
+  width 100%
+  background-color rgba(#fff, 0.2)
+  border 3px solid rgba(#fff, 0.3)
+  padding .5em
+  line-height 1.75em
+  margin 3em 0
+  border-radius .2em
+  position relative
+
+  input
+    border none
+    background transparent
+    font-size 1em
+    font-family 'Roboto', sans-serif
+    font-weight 300
+    width 100%
+    color #fff
+
+  > button
+    position absolute
+    right .5em
+    border 0
+    background-color darken(#CB573E, 20%)
+    color #FFFDDC
+    font-family 'Roboto', sans-serif
+    font-weight 100
+    text-transform uppercase
+    padding 10px 13px 7px
+    font-size .8em
+    border-radius .2em
+    cursor pointer
+    line-height 1
+
+    &:hover
+      background-color darken(#CB573E, 10%)
+
+.splash__prose
+  margin 5em 0
+
+pre
+  font-family 'Consolas', monospace
+  font-size 16px
+  line-height 1.5
+
+.code-sample
+  background-color #FFFDDC
+  color #CB573E
+  padding 1em
+  overflow auto
+
+p
+tr
+  code
+    background-color rgba(#FFFDDC, 0.1)
+    padding 5px 3px
+
+table
+  font-size .8em
+  border none
+  display block
+  overflow auto
+
+td
+  margin 0
+  padding 0
+  background none
+  border none
+  border-collapse collapse
+  border-spacing 0
+  background-image none
+  padding .5em
+
+thead td
+  border-bottom 1px solid #FFFDDC
+  border-collapse collapse
+  font-weight bold
+
+tbody td
+  max-width 20%
+  border-bottom 1px solid rgba(#FFFDDC, 0.1)
