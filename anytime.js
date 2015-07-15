@@ -293,6 +293,8 @@ AnytimePicker.prototype.updateDisplay = function () {
   if (this.value) {
     this.timeEls.hours.value = this.value.hour()
     this.timeEls.minutes.value = this.value.minute()
+    if (this.timeEls.hourLabel) this.timeEls.hourLabel.textContent = pad(this.value.hour(), 2)
+    if (this.timeEls.minuteLabel) this.timeEls.minuteLabel.textContent = pad(this.value.minute(), 2)
   }
 
 }
@@ -504,7 +506,12 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
 
   timeEl.appendChild(minuteSlider)
 
-  this.timeEls = { hours: hourSlider, minutes: minuteSlider }
+  this.timeEls =
+    { hours: hourSlider
+    , minutes: minuteSlider
+    , hourLabel: timeLabelHourEl
+    , minuteLabel: timeLabelMinuteEl
+    }
 
 }
 
