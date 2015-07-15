@@ -529,5 +529,6 @@ AnytimePicker.prototype.destroy = function () {
 function getTimeSeparator() {
   var colonEl = document.createElement('span')
   classList(colonEl).add('anytime-picker__time-separator')
-  return colonEl.textContent = ':'
+  colonEl.textContent = ':'
+  return colonEl
 }
