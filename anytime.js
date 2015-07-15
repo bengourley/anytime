@@ -291,12 +291,10 @@ AnytimePicker.prototype.updateDisplay = function () {
   }.bind(this))
 
   if (this.value) {
-    // Set hours
-    this.el.querySelector('.anytime-picker__dropdown--hours').value = this.value.hour()
-
-    // Set minutes
-    this.el.querySelector('.anytime-picker__dropdown--minutes').value = this.value.minute()
+    this.timeEls.hours.value = this.value.hour()
+    this.timeEls.minutes.value = this.value.minute()
   }
+
 }
 
 AnytimePicker.prototype.getCurrentSelection = function () {
@@ -423,9 +421,7 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
 
   timeEl.appendChild(hourSelect)
 
-  var colonEl = document.createElement('span')
-  classList(colonEl).add('anytime-picker__time-separator')
-  colonEl.textContent = ':'
+  var colonEl = getTimeSeparator()
   timeEl.appendChild(colonEl)
 
   var minuteSelect = document.createElement('select')
@@ -446,6 +442,8 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
 
   timeEl.appendChild(minuteSelect)
 
+  this.timeEls = { hours: hourSelect, minutes: minuteSelect }
+
 }
 
 AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
@@ -458,9 +456,7 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
   timeLabelEl.appendChild(timeLabelHourEl)
   timeLabelHourEl.textContent = pad(this.createMoment(this.options.initialValue).hours(), 2)
 
-  var colonEl = document.createElement('span')
-  classList(colonEl).add('anytime-picker__time-separator')
-  colonEl.textContent = ':'
+  var colonEl = getTimeSeparator()
   timeLabelEl.appendChild(colonEl)
 
   var timeLabelMinuteEl = document.createElement('span')
@@ -508,6 +504,8 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
 
   timeEl.appendChild(minuteSlider)
 
+  this.timeEls = { hours: hourSlider, minutes: minuteSlider }
+
 }
 
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
@@ -526,4 +524,10 @@ AnytimePicker.prototype.destroy = function () {
   this.options.input.removeEventListener('click', this.__events['misc toggle'])
   delete this.__events['misc toggle']
   this.el = null
+}
+
+function getTimeSeparator() {
+  var colonEl = document.createElement('span')
+  classList(colonEl).add('anytime-picker__time-separator')
+  return colonEl.textContent = ':'
 }
