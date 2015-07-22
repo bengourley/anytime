@@ -214,11 +214,16 @@ AnytimePicker.prototype.updateDisplay = function () {
     , monthDetails = getMonthDetails(this.currentView.month, this.currentView.year)
 
   /*
-   * Create the blank days ahead of the first day of the current month so that
-   * the days appear in the corresponding columns of the days of the week
+   * Create the day column headers
    */
   function renderDayNames() {
-    this.options.moment.weekdaysMin().forEach(function (d) {
+    var names = this.options.moment.weekdaysMin()
+    // Moment gives Sunday as the first item, but uses Monday as the first day of the week.
+    // This is due to getMonthDetails returning the value of ISO weekday, which has Monday
+    // as index 1 and Sunday at index 7. For this reason, Sunday is shifted from the from
+    // of the array and pushed to the back.
+    names.push(names.shift())
+    names.forEach(function (d) {
       var dayName = document.createElement('span')
       dayName.textContent = d
       classList(dayName).add('anytime-picker__day-name')
