@@ -373,7 +373,7 @@ AnytimePicker.prototype.updatePosition = function () {
   this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
 
   var leftOffset = (position.left + this.root.offsetWidth - this.el.offsetWidth)
-  this.el.style.left = (leftOffset <= 0 ? 0 : leftOffset) + 'px'
+  this.el.style.left = (leftOffset < 0 ? 0 : leftOffset) + 'px'
 }
 
 AnytimePicker.prototype.toggle = function () {
