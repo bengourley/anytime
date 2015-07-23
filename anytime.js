@@ -371,7 +371,9 @@ AnytimePicker.prototype.hide = function () {
 AnytimePicker.prototype.updatePosition = function () {
   var position = { top: this.root.offsetTop, left: this.root.offsetLeft }
   this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
-  this.el.style.left = (position.left + this.root.offsetWidth - this.el.offsetWidth) + 'px'
+
+  var leftOffset = (position.left + this.root.offsetWidth - this.el.offsetWidth)
+  this.el.style.left = (leftOffset <= 0 ? 0 : leftOffset) + 'px'
 }
 
 AnytimePicker.prototype.toggle = function () {
