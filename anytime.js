@@ -459,7 +459,7 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
 }
 
 AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
-
+  /* jshint maxstatements: 28 */
   var timeLabelEl = document.createElement('p')
   classList(timeLabelEl).add('anytime-picker__time-label')
 
