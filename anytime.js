@@ -4,7 +4,6 @@ var Emitter = require('events').EventEmitter
   , extend = require('lodash.assign')
   , throttle = require('lodash.throttle')
   , pad = require('pad-number')
-  , classList = require('classlist')
   , moment = require('moment')
   , getYearList = require('./lib/get-year-list')
   , createButton = require('./lib/create-button')
@@ -47,7 +46,7 @@ function AnytimePicker(options) {
   this.monthNames = this.options.moment.months()
 
   this.el.addEventListener('click', function (e) {
-    if (classList(e.target).contains('js-anytime-picker-day')) {
+    if (e.target.classList.contains('js-anytime-picker-day')) {
       e.stopPropagation()
       this.update(function (value) {
         return value
@@ -107,23 +106,23 @@ AnytimePicker.prototype.render = function () {
 
   // Header
   var header = document.createElement('div')
-  classList(header).add('anytime-picker__header')
+  header.classList.add('anytime-picker__header')
   this.renderHeader(header)
 
   // Dates
   var dates = document.createElement('div')
-  classList(dates).add('anytime-picker__dates')
-  classList(dates).add('js-anytime-picker-dates')
+  dates.classList.add('anytime-picker__dates')
+  dates.classList.add('js-anytime-picker-dates')
 
   // Time
   var time = document.createElement('div')
-  classList(time).add('anytime-picker__time')
-  classList(time).add('js-anytime-picker-time')
+  time.classList.add('anytime-picker__time')
+  time.classList.add('js-anytime-picker-time')
   this.renderTimeInput(time)
 
   // Footer
   var footer = document.createElement('div')
-  classList(footer).add('anytime-picker__footer')
+  footer.classList.add('anytime-picker__footer')
   this.renderFooter(footer)
 
   this.el.appendChild(header)
@@ -148,7 +147,8 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
 
   // Months
   var monthSelect = document.createElement('select')
-  classList(monthSelect).add('js-anytime-picker-month', 'anytime-picker__dropdown')
+  monthSelect.classList.add('js-anytime-picker-month')
+  monthSelect.classList.add('anytime-picker__dropdown')
   this.monthNames.forEach(function (month, i) {
     var monthOption = document.createElement('option')
     monthOption.textContent = month
@@ -165,7 +165,8 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
 
   // Years
   var yearSelect = document.createElement('select')
-  classList(yearSelect).add('js-anytime-picker-year', 'anytime-picker__dropdown')
+  yearSelect.classList.add('js-anytime-picker-year')
+  yearSelect.classList.add('anytime-picker__dropdown')
   getYearList(this.options.minYear, this.options.maxYear).forEach(function (year) {
     var yearOption = document.createElement('option')
     yearOption.textContent = year
@@ -229,7 +230,7 @@ AnytimePicker.prototype.updateDisplay = function () {
     names.forEach(function (d) {
       var dayName = document.createElement('span')
       dayName.textContent = d
-      classList(dayName).add('anytime-picker__day-name')
+      dayName.classList.add('anytime-picker__day-name')
       daysEl.appendChild(dayName)
     })
   }
@@ -266,10 +267,9 @@ AnytimePicker.prototype.updateDisplay = function () {
 
     for (var y = 1; y <= monthDetails.length; y++) {
       var date = createButton(y, [ 'anytime-picker__date', 'js-anytime-picker-day' ])
-        , cl = classList(date)
 
       if (y === currentDayOfMonth && isCurrentMonth && isCurrentYear) {
-        cl.add('anytime-picker__date--current')
+        cl.classList.add('anytime-picker__date--current')
       }
 
       // Needs to add or remove because the current selected day can change
@@ -315,7 +315,7 @@ AnytimePicker.prototype.show = function () {
 
   this.root.offsetParent.appendChild(this.el)
 
-  classList(this.el).add('anytime-picker--is-visible')
+  this.el.classList.add('anytime-picker--is-visible')
 
   this.updatePosition()
 
@@ -353,7 +353,7 @@ AnytimePicker.prototype.show = function () {
 
 AnytimePicker.prototype.hide = function () {
 
-  classList(this.el).remove('anytime-picker--is-visible')
+  this.el.classList.remove('anytime-picker--is-visible')
 
   document.removeEventListener('keyup', this.__events['doc escape hide'])
   delete this.__events['doc escape hide']
@@ -380,7 +380,7 @@ AnytimePicker.prototype.updatePosition = function () {
 }
 
 AnytimePicker.prototype.toggle = function () {
-  if (classList(this.el).contains('anytime-picker--is-visible')) {
+  if (this.el.classList.contains('anytime-picker--is-visible')) {
     this.hide()
   } else {
     this.show()
@@ -416,7 +416,8 @@ AnytimePicker.prototype.showNextMonth = function () {
 AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
 
   var hourSelect = document.createElement('select')
-  classList(hourSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--hours')
+  hourSelect.classList.add('anytime-picker__dropdown')
+  hourSelect.classList.add('anytime-picker__dropdown--hours')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
     hour.setAttribute('value', i)
@@ -437,7 +438,8 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   timeEl.appendChild(colonEl)
 
   var minuteSelect = document.createElement('select')
-  classList(minuteSelect).add('anytime-picker__dropdown', 'anytime-picker__dropdown--minutes')
+  minuteSelect.classList.add('anytime-picker__dropdown')
+  minuteSelect.classList.add('anytime-picker__dropdown--minutes')
   for (var j = 0; j < 60; j += this.options.minuteIncrement) {
     var minute = document.createElement('option')
     minute.setAttribute('value', j)
@@ -461,15 +463,15 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
 AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
   /* jshint maxstatements: 28 */
   var timeLabelEl = document.createElement('p')
-  classList(timeLabelEl).add('anytime-picker__time-label')
+  timeLabelEl.classList.add('anytime-picker__time-label')
 
   var timeLabelTitleEl = document.createElement('span')
-  classList(timeLabelTitleEl).add('anytime-picker__time-label--title')
+  timeLabelTitleEl.classList.add('anytime-picker__time-label--title')
   timeLabelEl.appendChild(timeLabelTitleEl)
   timeLabelTitleEl.textContent = this.options.timeSlidersTitle
 
   var timeLabelHourEl = document.createElement('span')
-  classList(timeLabelHourEl).add('anytime-picker__time-label--hour')
+  timeLabelHourEl.classList.add('anytime-picker__time-label--hour')
   timeLabelEl.appendChild(timeLabelHourEl)
   timeLabelHourEl.textContent = pad(this.createMoment(this.options.initialValue).hours(), 2)
 
@@ -477,7 +479,7 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
   timeLabelEl.appendChild(colonEl)
 
   var timeLabelMinuteEl = document.createElement('span')
-  classList(timeLabelMinuteEl).add('anytime-picker__time-label--minute')
+  timeLabelMinuteEl.classList.add('anytime-picker__time-label--minute')
   timeLabelEl.appendChild(timeLabelMinuteEl)
   timeLabelMinuteEl.textContent = pad(this.createMoment(this.options.initialValue).minutes(), 2)
 
@@ -552,7 +554,7 @@ AnytimePicker.prototype.destroy = function () {
 
 function getTimeSeparator() {
   var colonEl = document.createElement('span')
-  classList(colonEl).add('anytime-picker__time-separator')
+  colonEl.classList.add('anytime-picker__time-separator')
   colonEl.textContent = ':'
   return colonEl
 }
