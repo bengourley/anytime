@@ -1,7 +1,6 @@
 module.exports = AnytimePicker
 
 var Emitter = require('events').EventEmitter
-  , extend = require('lodash.assign')
   , throttle = require('lodash.throttle')
   , pad = require('pad-number')
   , classList = require('classlist')
@@ -30,7 +29,12 @@ var Emitter = require('events').EventEmitter
 
 function AnytimePicker(options) {
 
-  this.options = extend({}, defaults, options)
+  // Merge options and defaults
+  this.options = options || {}
+
+  for (var attr in defaults) {
+    if (!(attr in options)) this.options[attr] = defaults[attr]
+  }
 
   Emitter.call(this)
 
