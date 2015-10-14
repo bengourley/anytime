@@ -380,7 +380,7 @@ AnytimePicker.prototype.updatePosition = function () {
     leftOffset = 0
   }
 
-  this.el.style.transform = 'translate(' + topOffset + 'px ,' + leftOffset + 'px)'
+  this.el.style.transform = 'translate(' + leftOffset + 'px ,' + topOffset + 'px)'
 }
 
 AnytimePicker.prototype.toggle = function () {
