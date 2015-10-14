@@ -1,4 +1,4 @@
-.anytime-picker { display: none; position: absolute; }
+.anytime-picker { display: none; position: absolute; top: 0; left: 0; }
 .anytime-picker--is-visible { display: block; }
 .anytime-picker__dates {  width: 200px; }
 .anytime-picker__dates > * { box-sizing: border-box; width: 14.28%; display: inline-block; }
