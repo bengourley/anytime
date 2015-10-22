@@ -373,10 +373,17 @@ AnytimePicker.prototype.hide = function () {
 
 AnytimePicker.prototype.updatePosition = function () {
   var position = { top: this.root.offsetTop, left: this.root.offsetLeft }
-  this.el.style.top = (position.top + this.root.offsetHeight + this.options.offset) + 'px'
-
+  var topOffset = (position.top + this.root.offsetHeight + this.options.offset)
   var leftOffset = (position.left + this.root.offsetWidth - this.el.offsetWidth)
-  this.el.style.left = (leftOffset < 0 ? 0 : leftOffset) + 'px'
+
+  if (leftOffset < 0) {
+    leftOffset = 0
+  }
+
+  var transformValue = 'translate(' + leftOffset + 'px, ' + topOffset + 'px)'
+
+  this.el.style.webkitTransform = transformValue
+  this.el.style.transform = transformValue
 }
 
 AnytimePicker.prototype.toggle = function () {
