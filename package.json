@@ -20,7 +20,6 @@
   "author": "Ben Gourley",
   "license": "ISC",
   "dependencies": {
-    "classlist": "^1.0.1",
     "lodash.assign": "*",
     "lodash.throttle": "*",
     "moment": "^2.10.3",
