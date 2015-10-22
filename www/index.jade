@@ -3,6 +3,7 @@ html
   head
     meta(charset='utf8')
     title Anytime – a JavaScript date and time picker
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:300,100,400,700')
     link(rel='stylesheet', href='./index.css')
   body
     .main-container
@@ -49,7 +50,7 @@ html
               td Type
               td Description
               td Default
-          
+
           tbody
 
             tr
@@ -176,7 +177,7 @@ html
 
         h3: a(id='change', href='#change') p.on('change', fn)
         p When a value is selected (or cleared) with the picker, the change event will emit with the new value.
-        
+
         pre.code-sample: code.
           p.on('change', function (d) {
             // When set, d will be a date
