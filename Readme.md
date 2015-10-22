@@ -6,6 +6,8 @@
 
 A date/time picker.
 
+![Anytime!](https://raw.githubusercontent.com/bengourley/anytime/master/www/images/anytime.png)
+
 ## Time, anyone?
 
 I *really* didn't want to write this module but there are no good open source alternatives. In our CMSs at [clock](https://github.com/clocklimited/) we have tonnes of instances where a **time** needs to be selected: article live dates, offer expiry dates and other scheduling.
