@@ -21,7 +21,6 @@
   "license": "ISC",
   "dependencies": {
     "classlist": "^1.0.1",
-    "lodash.assign": "*",
     "lodash.throttle": "*",
     "moment": "^2.10.3",
     "pad-number": "^0.0.1"
