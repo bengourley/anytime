@@ -1,5 +1,6 @@
-node_modules
-coverage
-test/vendor
-bundle.js
-www
+coverage/
+dist/
+test/
+website/
+node_modules/
+gulpfile.js

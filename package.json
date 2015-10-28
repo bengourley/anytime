@@ -1,6 +1,9 @@
 {
   "name": "anytime",
   "version": "1.2.0",
+  "author": "Ben Gourley",
+  "description": "A date/time picker",
+  "license": "ISC",
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
   },
@@ -8,8 +11,7 @@
     "type": "git",
     "url": "http://github.com/bengourley/anytime.git"
   },
-  "description": "A date/time picker",
-  "main": "anytime.js",
+  "main": "src/anytime.js",
   "scripts": {
     "lint": "jshint . --reporter=./node_modules/jshint-full-path/index.js",
     "pretest": "npm run-script lint",
@@ -17,8 +19,6 @@
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "prepublish": "npm test && npm prune"
   },
-  "author": "Ben Gourley",
-  "license": "ISC",
   "dependencies": {
     "lodash.assign": "*",
     "lodash.throttle": "*",
@@ -26,17 +26,23 @@
     "pad-number": "^0.0.1"
   },
   "devDependencies": {
-    "browserify": "^10.2.1",
+    "browserify": "^11.1.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-gh-pages": "^0.5.2",
+    "gulp-htmlmin": "^1.1.4",
+    "gulp-jade": "^1.1.0",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.4.1",
     "istanbul": "^0.3.2",
-    "jade": "^1.11.0",
     "jsdom": "^3.1.2",
     "jshint": "^2.5.6",
     "jshint-full-path": "^1.1.1",
     "mocha": "^1.21.5",
     "moment-timezone": "^0.3.1",
-    "responsive-grid": "^1.0.0",
-    "st": "^0.5.4",
-    "stylus": "^0.51.1",
-    "uglify-js": "^2.4.23"
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

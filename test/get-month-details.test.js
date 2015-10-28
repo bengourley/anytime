@@ -1,4 +1,4 @@
-var getMonthDetails = require('../lib/get-month-details')
+var getMonthDetails = require('../src/lib/get-month-details')
   , assert = require('assert')
 
 describe('getMonthDetails()', function () {
