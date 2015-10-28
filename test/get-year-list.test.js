@@ -1,4 +1,4 @@
-var getYearList = require('../lib/get-year-list')
+var getYearList = require('../src/lib/get-year-list')
   , assert = require('assert')
 
 describe('getYearList()', function () {
