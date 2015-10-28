@@ -20,6 +20,16 @@ Stay tuned.
 
 ### [Documentation Site](https://bengourley.github.io/anytime)
 
+## Development
+
+### Prerequisites
+
+- [Node.js + npm](http://nodejs.org/)
+
+```shell
+npm install -g gulp jshint istanbul
+```
+
 ## Credits
 * [Ben Gourley](https://github.com/bengourley/)
 
