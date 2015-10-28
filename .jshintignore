@@ -1,6 +1,5 @@
 coverage/
 dist/
 test/
-website/
+website/build/
 node_modules/
-gulpfile.js

@@ -23,13 +23,13 @@ var browserify = require('browserify'),
 ////////////////////////////////////////////////////////////////////////////////
 
 var paths = {
-  web_src_html : 'website/index.jade',
-  web_src_js   : 'website/js/index.js',
-  web_src_scss : 'website/styles/index.scss',
-  web_dest     : 'website/build/',
+  webSrcHtml : 'website/index.jade',
+  webSrcJs   : 'website/js/index.js',
+  webSrcScss : 'website/styles/index.scss',
+  webDest    : 'website/build/',
 
-  lib_src_js   : 'src/anytime.js',
-  lib_dest     : 'dist/'
+  libSrcJs   : 'src/anytime.js',
+  libDest    : 'dist/'
 };
 
 
@@ -39,32 +39,31 @@ var paths = {
 
 // Delete generated website files
 gulp.task('clean:web', function () {
-  del.sync(paths.web_dest, { force: true });
+  del.sync(paths.webDest, { force: true });
 });
 
 // Process main HTML file
 gulp.task('html', function () {
-  return gulp.src(paths.web_src_html)
+  return gulp.src(paths.webSrcHtml)
     .pipe(jade())
     .pipe(htmlmin({
       removeComments: true,
-      collapseWhitespace: true,
-      minifyJS: true
+      collapseWhitespace: true
     }))
-    .pipe(gulp.dest(paths.web_dest));
+    .pipe(gulp.dest(paths.webDest));
 });
 
 // Process SCSS files
 gulp.task('styles', function () {
-  return gulp.src(paths.web_src_scss)
+  return gulp.src(paths.webSrcScss)
     .pipe(sass().on('error', sass.logError))
     .pipe(minifyCss())
-    .pipe(gulp.dest(paths.web_dest));
+    .pipe(gulp.dest(paths.webDest));
 });
 
 // Process JS scripts
 gulp.task('scripts', function (cb) {
-  browserify(paths.web_src_js)
+  browserify(paths.webSrcJs)
     .bundle()
     .on('error', function (err) {
       console.error(err);
@@ -73,7 +72,7 @@ gulp.task('scripts', function (cb) {
     .pipe(source('index.js'))
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest(paths.web_dest))
+    .pipe(gulp.dest(paths.webDest))
     .on('end', cb);
 });
 
@@ -82,13 +81,13 @@ gulp.task('build:web', ['clean:web', 'html', 'styles', 'scripts']);
 
 // Delete generated Anytime files
 gulp.task('clean:lib', function () {
-  del.sync(paths.lib_dest, { force: true });
+  del.sync(paths.libDest, { force: true });
 });
 
 // Compile Anytime library
 gulp.task('build:lib', ['clean:lib'], function (cb) {
   // Bundle with Browserify
-  browserify(paths.lib_src_js)
+  browserify(paths.libSrcJs)
     .bundle()
     .on('error', function (err) {
       console.error(err);
@@ -97,19 +96,19 @@ gulp.task('build:lib', ['clean:lib'], function (cb) {
 
     // Normal file
     .pipe(source('anytime.js'))
-    .pipe(gulp.dest(paths.lib_dest))
+    .pipe(gulp.dest(paths.libDest))
 
     // Minified file
     .pipe(buffer())
     .pipe(uglify())
     .pipe(rename('anytime.min.js'))
-    .pipe(gulp.dest(paths.lib_dest))
+    .pipe(gulp.dest(paths.libDest))
 
     .on('end', cb);
 });
 
 // Deploy to GitHub Pages
 gulp.task('deploy', ['build:web'], function() {
-  return gulp.src(paths.web_dest + '/**/*')
+  return gulp.src(paths.webDest + '/**/*')
     .pipe(ghPages());
 });

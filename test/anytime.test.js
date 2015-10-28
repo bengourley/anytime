@@ -8,7 +8,19 @@ describe('anytime', function () {
 
   // Clear the module cache for anytime so that it can be reloaded again.
   // This is needed to test option defaults that are set in the module scope
-  beforeEach(function () { delete require.cache[require.resolve('../')] })
+  beforeEach(function () {
+    delete require.cache[require.resolve('../')]
+  })
+
+  it('should not throw when rendered with a null initialValue', function () {
+    var Picker = require('../src/anytime')
+      , parent = document.createElement('input')
+      , p = new Picker({ input: parent, initialValue: null })
+
+    assert.doesNotThrow(function () {
+      p.render()
+    }, /setAttribute/)
+  })
 
   describe('destroy()', function () {
 
@@ -210,16 +222,6 @@ describe('anytime', function () {
       assert.equal(minutes.length, 60)
     })
 
-  })
-
-  it('should not throw when rendered with a null initialValue', function () {
-    var Picker = require('../src/anytime')
-      , parent = document.createElement('input')
-      , p = new Picker({ input: parent, initialValue: null })
-
-    assert.doesNotThrow(function () {
-      p.render()
-    }, /setAttribute/)
   })
 
   describe('locale', function () {
