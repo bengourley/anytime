@@ -1,6 +1,9 @@
 {
   "name": "anytime",
   "version": "1.2.0",
+  "description": "A date/time picker",
+  "author": "Ben Gourley",
+  "license": "ISC",
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
   },
@@ -8,7 +11,6 @@
     "type": "git",
     "url": "http://github.com/bengourley/anytime.git"
   },
-  "description": "A date/time picker",
   "main": "anytime.js",
   "scripts": {
     "lint": "jshint . --reporter=./node_modules/jshint-full-path/index.js",
@@ -17,8 +19,9 @@
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "prepublish": "npm test && npm prune"
   },
-  "author": "Ben Gourley",
-  "license": "ISC",
+  "engines": {
+    "node": ">= 4.0.0"
+  },
   "dependencies": {
     "lodash.assign": "*",
     "lodash.throttle": "*",
