@@ -1,0 +1,136 @@
+//
+// ANYTIME DATE/TIME PICKER
+// ========================
+//
+
+$base--border-radius: 0.3em;
+$color--black: #333;
+$color--border: #ccc;
+$color--grey--light: #ddd;
+$color--primary: #cb573e;
+$color--white: #fff;
+
+.anytime-picker {
+  background-color: $color--white;
+  border: 1px solid $color--border;
+  border-radius: $base--border-radius;
+  color: $color--black;
+  display: none;
+  line-height: 1;
+  padding: 3px;
+  position: absolute;
+  width: 240px;
+  z-index: 100;
+}
+
+.anytime-picker--is-visible {
+  display: block
+}
+
+.anytime-picker__dropdown {
+  display: inline-block;
+  height: 24px;
+  margin: 0 3px;
+  width: auto;
+}
+
+.anytime-picker__dates .anytime-picker__day-name {
+  font-size: 11px;
+  padding-bottom: 3px;
+  text-align: center;
+}
+
+.anytime-picker__dates {
+  margin: 3px 0;
+  width: auto;
+
+  span,
+  .anytime-picker__date {
+    display: inline-block;
+    padding: 8px 3px;
+    width: (100% / 7);
+  }
+}
+
+.anytime-picker__date {
+  background: $color--grey--light;
+  border: 0;
+  box-shadow: inset 0 0 0 1px $color--white; // Fake table cell borders
+  color: $color--black;
+  cursor: pointer;
+  position: relative;
+  text-align: center;
+  transition: background-color 0.4s ease, color 0.4s ease;
+
+  &:hover,
+  &:focus {
+    background: $color--primary;
+    color: $color--white;
+    outline: 0;
+    transition-duration: 0.1s;
+  }
+}
+
+.anytime-picker__header,
+.anytime-picker__footer {
+  padding: 5px;
+  text-align: center;
+
+  .anytime-picker__dropdown,
+  .anytime-picker__button {
+    margin: 3px 2px;
+    vertical-align: middle;
+  }
+}
+
+.anytime-picker__footer {
+  background-color: $color--grey--light;
+
+  .anytime-picker__button {
+    font-size: 13px;
+    line-height: 1em;
+  }
+}
+
+.anytime-picker__time {
+  padding: 10px 0;
+  text-align: center;
+
+  .anytime-picker__dropdown {
+    width: 30%;
+  }
+}
+
+.anytime-picker__button {
+  background-color: $color--grey--light;
+  border: 1px solid shade($color--grey--light, 10%);
+  border-radius: $base--border-radius;
+  color: $color--black;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  line-height: 0.4;
+  min-width: 25px;
+  overflow: visible; // removes padding in IE
+  padding: 6px 7px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  vertical-align: middle;
+
+  &:focus,
+  &:hover {
+    background-color: shade($color--grey--light, 15%);
+    border-color: shade($color--grey--light, 25%);
+    color: $color--black;
+    outline: 0;
+    text-decoration: none;
+    transition-duration: 0.1s;
+  }
+
+  &:active {
+    background-color: shade($color--grey--light, 25%);
+    border-color: shade($color--grey--light, 35%);
+  }
+}

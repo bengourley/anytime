@@ -1,16 +1,17 @@
 module.exports = AnytimePicker
 
-var Emitter = require('events').EventEmitter
-  , extend = require('lodash.assign')
-  , throttle = require('lodash.throttle')
-  , pad = require('pad-number')
-  , moment = require('moment')
-  , getYearList = require('./lib/get-year-list')
-  , createButton = require('./lib/create-button')
-  , createSlider = require('./lib/create-slider')
+var Emitter         = require('events').EventEmitter
+  , extend          = require('lodash.assign')
+  , moment          = require('moment')
+  , pad             = require('pad-number')
+  , throttle        = require('lodash.throttle')
+  , createButton    = require('./lib/create-button')
+  , createMoment    = require('./lib/create-moment')
+  , createSlider    = require('./lib/create-slider')
   , getMonthDetails = require('./lib/get-month-details')
-  , createMoment = require('./lib/create-moment')
-  , defaults =
+  , getYearList     = require('./lib/get-year-list')
+
+var defaults =
       { minYear: 1960
       , maxYear: 2030
       , offset: 5
@@ -269,13 +270,13 @@ AnytimePicker.prototype.updateDisplay = function () {
       var date = createButton(y, [ 'anytime-picker__date', 'js-anytime-picker-day' ])
 
       if (y === currentDayOfMonth && isCurrentMonth && isCurrentYear) {
-        cl.classList.add('anytime-picker__date--current')
+        date.classList.add('anytime-picker__date--current')
       }
 
       // Needs to add or remove because the current selected day can change
       // within the current month and need to be cleared from others
       var current = y === selectedDayOfMonth && isSelectedCurrentMonth && isSelectedCurrentYear
-      cl[current ? 'add' : 'remove']('anytime-picker__date--selected')
+      date.classList.toggle('anytime-picker__date--selected', current)
 
       date.setAttribute('data-date', y)
       date.setAttribute('data-month', this.currentView.month)

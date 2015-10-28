@@ -1,5 +1,5 @@
-node_modules
-coverage
-.zuulrc
-bundle.js
+coverage/
+node_modules/
+website/build/
 .DS_Store
+npm-debug.log

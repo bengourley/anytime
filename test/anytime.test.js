@@ -8,13 +8,25 @@ describe('anytime', function () {
 
   // Clear the module cache for anytime so that it can be reloaded again.
   // This is needed to test option defaults that are set in the module scope
-  beforeEach(function () { delete require.cache[require.resolve('../')] })
+  beforeEach(function () {
+    delete require.cache[require.resolve('../')]
+  })
+
+  it('should not throw when rendered with a null initialValue', function () {
+    var Picker = require('../src/anytime')
+      , parent = document.createElement('input')
+      , p = new Picker({ input: parent, initialValue: null })
+
+    assert.doesNotThrow(function () {
+      p.render()
+    }, /setAttribute/)
+  })
 
   describe('destroy()', function () {
 
     it('should remove any bound events', function () {
 
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , p = new Picker({ input: document.createElement('input') })
 
       p.render()
@@ -27,7 +39,7 @@ describe('anytime', function () {
 
     it('should remove the element from the DOM', function () {
 
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('div')
         , p = new Picker({ input: document.createElement('input') })
 
@@ -44,7 +56,7 @@ describe('anytime', function () {
 
   describe('timezone', function () {
     it('should allow you to pass in a timezone which modifies all displayed dates', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , moment = require('moment-timezone')
         , p = new Picker(
@@ -62,7 +74,7 @@ describe('anytime', function () {
 
     it('should display the correct time in the time input', function () {
       // 9am UTC may 11th is 5am new york time
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , date = new Date(Date.UTC(2015, 4, 11, 9, 0, 0))
         , moment = require('moment-timezone')
@@ -83,7 +95,7 @@ describe('anytime', function () {
 
   describe('selected day', function () {
     it('should add a class to the selected day', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
         , date = moment().toDate()
@@ -97,7 +109,7 @@ describe('anytime', function () {
     })
 
     it('should update the class when the date changes', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent, initialValue: moment('2015-04-01') })
         , cls = 'anytime-picker__date--selected'
@@ -114,7 +126,7 @@ describe('anytime', function () {
     })
 
     it('should only have the class in the correct month', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , selectedDay = 13
         , p = new Picker({ input: parent, initialValue: moment('2015-02-' + selectedDay).toDate() })
@@ -128,7 +140,7 @@ describe('anytime', function () {
     })
 
     it('should only have the class in the correct year', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , selectedDay = 13
         , p = new Picker({ input: parent, initialValue: moment('2015-02-' + selectedDay).toDate() })
@@ -148,7 +160,7 @@ describe('anytime', function () {
 
   describe('current day', function () {
     it('should add a class to the current day', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
         , date = moment()
@@ -162,7 +174,7 @@ describe('anytime', function () {
     })
 
     it('should only have the class in the correct month', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
         , date = moment()
@@ -178,7 +190,7 @@ describe('anytime', function () {
     })
 
     it('should only have the class in the correct year', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
         , date = moment()
@@ -200,7 +212,7 @@ describe('anytime', function () {
   describe('minutes', function () {
 
     it('should output 60 minutes', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent })
 
@@ -212,21 +224,11 @@ describe('anytime', function () {
 
   })
 
-  it('should not throw when rendered with a null initialValue', function () {
-    var Picker = require('../')
-      , parent = document.createElement('input')
-      , p = new Picker({ input: parent, initialValue: null })
-
-    assert.doesNotThrow(function () {
-      p.render()
-    }, /setAttribute/)
-  })
-
   describe('locale', function () {
 
     it('should default to english', function () {
 
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({ input: parent, initialValue: new Date() })
 
@@ -237,7 +239,7 @@ describe('anytime', function () {
 
     it('should use a provided locale', function () {
 
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , moment = require('moment')
 
@@ -251,7 +253,7 @@ describe('anytime', function () {
     })
 
     it('should set "done" and "clear" button text to provided option', function () {
-      var Picker = require('../')
+      var Picker = require('../src/anytime')
         , parent = document.createElement('input')
         , p = new Picker({
           input: parent,

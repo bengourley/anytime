@@ -1,5 +1,5 @@
-node_modules
-coverage
-test/vendor
-bundle.js
-www
+coverage/
+dist/
+test/
+website/build/
+node_modules/
