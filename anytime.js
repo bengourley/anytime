@@ -269,13 +269,13 @@ AnytimePicker.prototype.updateDisplay = function () {
       var date = createButton(y, [ 'anytime-picker__date', 'js-anytime-picker-day' ])
 
       if (y === currentDayOfMonth && isCurrentMonth && isCurrentYear) {
-        cl.classList.add('anytime-picker__date--current')
+        date.classList.add('anytime-picker__date--current')
       }
 
       // Needs to add or remove because the current selected day can change
       // within the current month and need to be cleared from others
       var current = y === selectedDayOfMonth && isSelectedCurrentMonth && isSelectedCurrentYear
-      cl[current ? 'add' : 'remove']('anytime-picker__date--selected')
+      date.classList[current ? 'add' : 'remove']('anytime-picker__date--selected')
 
       date.setAttribute('data-date', y)
       date.setAttribute('data-month', this.currentView.month)
