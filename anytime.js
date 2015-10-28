@@ -275,7 +275,7 @@ AnytimePicker.prototype.updateDisplay = function () {
       // Needs to add or remove because the current selected day can change
       // within the current month and need to be cleared from others
       var current = y === selectedDayOfMonth && isSelectedCurrentMonth && isSelectedCurrentYear
-      date.classList[current ? 'add' : 'remove']('anytime-picker__date--selected')
+      date.classList.toggle('anytime-picker__date--selected', current)
 
       date.setAttribute('data-date', y)
       date.setAttribute('data-month', this.currentView.month)
