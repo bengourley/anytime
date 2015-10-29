@@ -53,7 +53,7 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
   // Bundle with Browserify
   browserify(paths.libSrcJs, { standalone: 'AnytimePicker' })
     .bundle()
-    .on('error', function (err) {
+    .on('error', function(err) {
       console.error(err)
       this.emit('end')
     })
@@ -61,13 +61,13 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
     // Normal file
     .pipe(source('anytime.js'))
     .pipe(buffer())
-    .pipe(header(banner, { pkg : pkg } ))
+    .pipe(header(banner, { pkg: pkg } ))
     .pipe(gulp.dest(paths.libDest))
 
     // Minified file
     .pipe(uglify())
     .pipe(rename('anytime.min.js'))
-    .pipe(header(banner, { pkg : pkg } ))
+    .pipe(header(banner, { pkg: pkg } ))
     .pipe(gulp.dest(paths.libDest))
 
     .on('end', cb)
