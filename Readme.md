@@ -22,6 +22,7 @@ Stay tuned.
 
 ## Credits
 * [Ben Gourley](https://github.com/bengourley/)
+* [Eugene Cheung](https://github.com/arkon/)
 
 ## Licence
 Copyright (c) 2015, Ben Gourley
