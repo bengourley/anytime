@@ -1,4 +1,4 @@
-var createMoment = require('../lib/create-moment')
+var createMoment = require('../src/lib/create-moment')
   , assert = require('assert')
 
 describe('createMoment()', function () {
