@@ -19,7 +19,8 @@
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test",
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "build": "gulp build:lib",
-    "prepublish": "npm test && npm prune && npm run-script build"
+    "prepublish": "npm test && npm prune && npm run-script build",
+    "website": "gulp deploy"
   },
   "engines": {
     "node": ">= 4.0.0"
