@@ -40,35 +40,28 @@ var paths =
 
 // Delete generated website files
 gulp.task('clean:web', function() {
-
   del.sync(paths.webDest, { force: true })
-
 })
 
 // Process main HTML file
 gulp.task('html', function() {
-
   return gulp.src(paths.webSrcHtml)
     .pipe(jade())
     .pipe(htmlmin({ removeComments: true, collapseWhitespace: true }))
     .pipe(gulp.dest(paths.webDest))
-
 })
 
 // Process SCSS files
 gulp.task('styles', function() {
-
   return gulp.src(paths.webSrcScss)
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({ browsers: ['last 2 versions'] }))
     .pipe(minifyCss())
     .pipe(gulp.dest(paths.webDest))
-
 })
 
 // Process JS scripts
 gulp.task('scripts', function(cb) {
-
   browserify(paths.webSrcJs)
     .bundle()
     .on('error', function(err) {
@@ -80,7 +73,6 @@ gulp.task('scripts', function(cb) {
     .pipe(uglify())
     .pipe(gulp.dest(paths.webDest))
     .on('end', cb)
-
 })
 
 // Compile library website
@@ -88,14 +80,11 @@ gulp.task('build:web', ['clean:web', 'html', 'styles', 'scripts'])
 
 // Delete generated Anytime files
 gulp.task('clean:lib', function() {
-
   del.sync(paths.libDest, { force: true })
-
 })
 
 // Compile Anytime library
 gulp.task('build:lib', ['clean:lib'], function(cb) {
-
   var pkg = require('./package.json')
 
   var banner =
@@ -129,13 +118,10 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
     .pipe(gulp.dest(paths.libDest))
 
     .on('end', cb)
-
 })
 
 // Deploy to GitHub Pages
 gulp.task('deploy', ['build:web'], function() {
-
   return gulp.src(paths.webDest + '/**/*')
     .pipe(ghPages())
-
 })
