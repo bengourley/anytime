@@ -2,4 +2,4 @@ coverage/
 dist/
 node_modules/
 test/
-www/
+website/build/
