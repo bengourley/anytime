@@ -7,6 +7,7 @@
   "publishConfig": {
     "registry": "http://registry.npmjs.org"
   },
+  "homepage": "http://bengourley.github.io/anytime/",
   "repository": {
     "type": "git",
     "url": "http://github.com/bengourley/anytime.git"
@@ -17,7 +18,8 @@
     "pretest": "npm run-script lint",
     "test": "istanbul cover ./node_modules/.bin/_mocha -- -R spec test",
     "posttest": "istanbul check-coverage && rm -rf coverage",
-    "prepublish": "npm test && npm prune"
+    "build": "gulp build:lib",
+    "prepublish": "npm test && npm prune && npm run-script build"
   },
   "engines": {
     "node": ">= 4.0.0"
@@ -29,7 +31,12 @@
     "pad-number": "^0.0.1"
   },
   "devDependencies": {
-    "browserify": "^10.2.1",
+    "browserify": "^11.1.0",
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-header": "^1.7.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.1",
     "istanbul": "^0.3.2",
     "jade": "^1.11.0",
     "jsdom": "^7.0.2",
@@ -40,6 +47,8 @@
     "responsive-grid": "^1.0.0",
     "st": "^0.5.4",
     "stylus": "^0.51.1",
-    "uglify-js": "^2.4.23"
+    "uglify-js": "^2.4.23",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
