@@ -550,13 +550,15 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 }
 
 AnytimePicker.prototype.destroy = function () {
-  this.hide()
-  this.emit('destroy')
-  this.removeAllListeners()
-  if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc toggle'])
-  this.options.input.removeEventListener('click', this.__events['misc toggle'])
-  delete this.__events['misc toggle']
-  this.el = null
+  if (this.el) {
+    this.hide()
+    this.emit('destroy')
+    this.removeAllListeners()
+    if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc toggle'])
+    this.options.input.removeEventListener('click', this.__events['misc toggle'])
+    delete this.__events['misc toggle']
+    this.el = null
+  }
 }
 
 function getTimeSeparator() {
