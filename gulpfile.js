@@ -43,7 +43,7 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
   var banner =
     [ '/**'
     , ' * <%= pkg.name %> - <%= pkg.description %>'
-    , ' * @version v<%= pkg.version %>'
+    , ' * @version <%= pkg.version %>'
     , ' * @link <%= pkg.homepage %>'
     , ' * @license <%= pkg.license %>'
     , ' */'
@@ -51,7 +51,7 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
     ].join('\n')
 
   // Bundle with Browserify
-  browserify(paths.libSrcJs, { standalone: 'AnytimePicker' })
+  browserify(paths.libSrcJs, { standalone: 'Anytime' })
     .bundle()
     .on('error', function(err) {
       console.error(err)
