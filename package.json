@@ -20,7 +20,7 @@
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "build": "gulp build:lib",
     "prepublish": "npm test && npm prune && npm run-script build",
-    "website": "gulp deploy"
+    "website": "gulp watch:web"
   },
   "engines": {
     "node": ">= 4.0.0"

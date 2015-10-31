@@ -12,9 +12,11 @@ var autoprefixer = require('gulp-autoprefixer')
   , gulp = require('gulp')
   , header = require('gulp-header')
   , htmlmin = require('gulp-htmlmin')
+  , http = require('http')
   , jade = require('gulp-jade')
   , minifyCss = require('gulp-minify-css')
   , sass = require('gulp-sass')
+  , st = require('st')
   , rename = require('gulp-rename')
   , source = require('vinyl-source-stream')
   , uglify = require('gulp-uglify')
@@ -77,6 +79,21 @@ gulp.task('scripts', function(cb) {
 
 // Compile library website
 gulp.task('build:web', ['clean:web', 'html', 'styles', 'scripts'])
+
+// Launch static server for website (localhost:8080) and watch for changes
+gulp.task('watch:web', ['build:web'], function() {
+  gulp.watch(paths.webSrcHtml, ['html'])
+  gulp.watch(paths.webSrcScss, ['styles'])
+  gulp.watch(paths.webSrcJs, ['scripts'])
+
+  http.createServer(
+    st(
+      { path: paths.webDest
+      , index: 'index.html'
+      }
+    )
+  ).listen(8080)
+})
 
 // Delete generated Anytime files
 gulp.task('clean:lib', function() {
