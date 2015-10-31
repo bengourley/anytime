@@ -22,25 +22,24 @@ html
               li Works in modern browsers: Chrome, FF, IE, Safari
 
             pre.terminal: code.terminal__content $ npm i --save anytime
+
       .docs
         h1: a(id='usage', href='#usage') Usage
 
-        p The only supported way of using anytime is with browserify.
+        p The only supported way of using Anytime is with browserify.
 
         pre.code-sample: code.
-          var Picker = require('anytime')
+          var Anytime = require('anytime')
 
         p.
           <a href="https://github.com/bengourley/anytime/blob/master/src/anytime.css">Here’s
-          the minimum CSS required</a> to get anytime functional. It’ll look pretty bare
+          the minimum CSS required</a> to get Anytime functional. It’ll look pretty bare
           and I’m sure you’ll want to style it up. There are plenty of classes on each
           component that you can hook into for styling.
 
-
-
         h2: a(id='constructor', href='#constructor') Creating a date/time picker:
         pre.code-sample: code.
-          var p = new Picker(options)
+          var p = new Anytime(options)
 
         h3: a(id='options', href='#options') Options
         table(cellpadding='0' cellspacing='0')
@@ -52,7 +51,6 @@ html
               td Default
 
           tbody
-
             tr
               td: code input
               td HTMLInputElement
@@ -76,7 +74,6 @@ html
               td Number
               td: p The earliest year that can be shown or selected in the picker interface.
               td: code 1960
-              td
 
             tr
               td: code maxYear
@@ -143,6 +140,24 @@ html
               td Boolean
               td: p Use sliders instead of the default dropdowns for the time input.
               td: code false
+
+            tr
+              td: code timeSlidersTitle
+              td String
+              td: p Set the text of the label before the time sliders.
+              td: code 'Time:'
+
+            tr
+              td: code timeSlidersHourTitle
+              td String
+              td: p Set the text of the label before the hour slider.
+              td: code 'Hour:'
+
+            tr
+              td: code timeSliderMinuteTitle
+              td String
+              td: p Set the text of the label before the minute slider.
+              td: code 'Minute:'
 
         h2: a(id='api', href='#api') API
 
@@ -212,4 +227,4 @@ html
       footer.main-footer
         p Made by Ben Gourley at <a href='http://www.clock.co.uk/'>Clock</a>.
 
-  script(src='./www/js/build.js')
+  script(src='index.js')
