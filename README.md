@@ -6,7 +6,7 @@
 
 A date/time picker.
 
-![Anytime!](https://raw.githubusercontent.com/bengourley/anytime/master/www/images/anytime.png)
+![Anytime!](https://raw.githubusercontent.com/bengourley/anytime/master/website/images/anytime.png)
 
 ## Time, anyone?
 
