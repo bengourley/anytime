@@ -88,18 +88,11 @@ EventEmitter.prototype.emit = function(type) {
         break;
       // slower
       default:
-        len = arguments.length;
-        args = new Array(len - 1);
-        for (i = 1; i < len; i++)
-          args[i - 1] = arguments[i];
+        args = Array.prototype.slice.call(arguments, 1);
         handler.apply(this, args);
     }
   } else if (isObject(handler)) {
-    len = arguments.length;
-    args = new Array(len - 1);
-    for (i = 1; i < len; i++)
-      args[i - 1] = arguments[i];
-
+    args = Array.prototype.slice.call(arguments, 1);
     listeners = handler.slice();
     len = listeners.length;
     for (i = 0; i < len; i++)
@@ -137,7 +130,6 @@ EventEmitter.prototype.addListener = function(type, listener) {
 
   // Check for listener leak
   if (isObject(this._events[type]) && !this._events[type].warned) {
-    var m;
     if (!isUndefined(this._maxListeners)) {
       m = this._maxListeners;
     } else {
@@ -259,7 +251,7 @@ EventEmitter.prototype.removeAllListeners = function(type) {
 
   if (isFunction(listeners)) {
     this.removeListener(type, listeners);
-  } else {
+  } else if (listeners) {
     // LIFO order
     while (listeners.length)
       this.removeListener(type, listeners[listeners.length - 1]);
@@ -280,15 +272,20 @@ EventEmitter.prototype.listeners = function(type) {
   return ret;
 };
 
+EventEmitter.prototype.listenerCount = function(type) {
+  if (this._events) {
+    var evlistener = this._events[type];
+
+    if (isFunction(evlistener))
+      return 1;
+    else if (evlistener)
+      return evlistener.length;
+  }
+  return 0;
+};
+
 EventEmitter.listenerCount = function(emitter, type) {
-  var ret;
-  if (!emitter._events || !emitter._events[type])
-    ret = 0;
-  else if (isFunction(emitter._events[type]))
-    ret = 1;
-  else
-    ret = emitter._events[type].length;
-  return ret;
+  return emitter.listenerCount(type);
 };
 
 function isFunction(arg) {
@@ -5108,6 +5105,7 @@ var Emitter = require('events').EventEmitter
       , timeSlidersTitle: 'Time:'
       , timeSlidersHourTitle: 'Hour:'
       , timeSliderMinuteTitle: 'Minute:'
+      , shortMonthNames: true
       }
 
 function AnytimePicker(options) {
@@ -5122,11 +5120,13 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
+  this.options.initialValue = this.getInitialValue()
+
   var initialView = this.createMoment(this.options.initialValue || this.options.initialView)
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
-  this.monthNames = this.options.moment.months()
+  this.monthNames = this.getMonthNames()
 
   this.el.addEventListener('click', function (e) {
     if (e.target.classList.contains('js-anytime-picker-day')) {
@@ -5164,6 +5164,16 @@ AnytimePicker.prototype.updateInput = function () {
   this.options.input.value = this.value ? this.value.format(this.options.format) : ''
 }
 
+AnytimePicker.prototype.getInitialValue = function () {
+  if (this.options.initialValue) return this.options.initialValue
+  if (this.options.input && this.options.input.value) return this.options.input.value
+  return null
+}
+
+AnytimePicker.prototype.getMonthNames = function () {
+  return this.options.moment[this.options.shortMonthNames ? 'monthsShort' : 'months']()
+}
+
 AnytimePicker.prototype.update = function (update) {
 
   if (update === null || update === undefined) {
@@ -5180,6 +5190,7 @@ AnytimePicker.prototype.update = function (update) {
 
   var updated = update(this.value || this.createMoment())
   this.value = updated
+  this.currentView = { month: this.value.month(), year: this.value.year() }
   this.updateDisplay()
   this.emit('change', this.value.toDate())
 
@@ -5235,7 +5246,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   this.monthNames.forEach(function (month, i) {
     var monthOption = document.createElement('option')
     monthOption.textContent = month
-    if (i === this.currentView.month) monthOption.setAttribute('selected', true)
+    if (i === this.currentView.month) monthOption.selected = true
     monthSelect.appendChild(monthOption)
   }.bind(this))
   headerEl.appendChild(monthSelect)
@@ -5253,7 +5264,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   getYearList(this.options.minYear, this.options.maxYear).forEach(function (year) {
     var yearOption = document.createElement('option')
     yearOption.textContent = year
-    if (year === this.currentView.year) yearOption.setAttribute('selected', true)
+    if (year === this.currentView.year) yearOption.selected = true
     yearSelect.appendChild(yearOption)
   }.bind(this))
   headerEl.appendChild(yearSelect)
@@ -5290,10 +5301,10 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
 
 AnytimePicker.prototype.updateDisplay = function () {
 
-  this.monthSelect.children[this.currentView.month].setAttribute('selected', true)
+  this.monthSelect.children[this.currentView.month].selected = true
   Array.prototype.slice.call(this.yearSelect.children).some(function (yearEl) {
     if (yearEl.textContent !== '' + this.currentView.year) return false
-    yearEl.setAttribute('selected', true)
+    yearEl.selected = true
     return true
   }.bind(this))
 
@@ -5382,15 +5393,11 @@ AnytimePicker.prototype.updateDisplay = function () {
   }.bind(this))
 
   if (this.value) {
-    this.timeEls.hours.value = this.value.hour()
-    this.timeEls.minutes.value = this.value.minute()
+    this.timeEls.hours.value = this.value.hour() + ''
+    this.timeEls.minutes.value = this.value.minute() + ''
     if (this.timeEls.hourLabel) this.timeEls.hourLabel.textContent = pad(this.value.hour(), 2)
     if (this.timeEls.minuteLabel) this.timeEls.minuteLabel.textContent = pad(this.value.minute(), 2)
   }
-
-}
-
-AnytimePicker.prototype.getCurrentSelection = function () {
 
 }
 
@@ -5510,9 +5517,9 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   hourSelect.classList.add('anytime-picker__dropdown--hours')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
-    hour.setAttribute('value', i)
+    hour.value = i
     hour.textContent = pad(i, 2)
-    if (this.createMoment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).hours() === i) hour.selected = true
     hourSelect.appendChild(hour)
   }
 
@@ -5532,9 +5539,9 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   minuteSelect.classList.add('anytime-picker__dropdown--minutes')
   for (var j = 0; j < 60; j += this.options.minuteIncrement) {
     var minute = document.createElement('option')
-    minute.setAttribute('value', j)
+    minute.value = j
     minute.textContent = pad(j, 2)
-    if (this.createMoment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).minutes() === j) minute.selected = true
     minuteSelect.appendChild(minute)
   }
 
@@ -5633,13 +5640,15 @@ AnytimePicker.prototype.renderTimeInput = function (timeEl) {
 }
 
 AnytimePicker.prototype.destroy = function () {
-  this.hide()
-  this.emit('destroy')
-  this.removeAllListeners()
-  if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc toggle'])
-  this.options.input.removeEventListener('click', this.__events['misc toggle'])
-  delete this.__events['misc toggle']
-  this.el = null
+  if (this.el) {
+    this.hide()
+    this.emit('destroy')
+    this.removeAllListeners()
+    if (this.options.button) this.options.button.removeEventListener('click', this.__events['misc toggle'])
+    this.options.input.removeEventListener('click', this.__events['misc toggle'])
+    delete this.__events['misc toggle']
+    this.el = null
+  }
 }
 
 function getTimeSeparator() {
@@ -5665,9 +5674,13 @@ module.exports = createMoment
 
 function createMoment(value) {
   var m = this.options.moment
-  value = value !== null ? value : undefined
-  if (this.options.timezone && typeof m.tz === 'function') return m.tz(value, this.options.timezone)
-  return m(value)
+    , args = [ value !== null ? value : undefined ]
+  if (typeof value === 'string') args.push(this.options.format)
+  if (this.options.timezone && typeof m.tz === 'function') {
+    args.push(this.options.timezone)
+    return m.tz.apply(m, args)
+  }
+  return m.apply(null, args)
 }
 
 },{}],22:[function(require,module,exports){
