@@ -167,7 +167,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   this.monthNames.forEach(function (month, i) {
     var monthOption = document.createElement('option')
     monthOption.textContent = month
-    if (i === this.currentView.month) monthOption.setAttribute('selected', true)
+    if (i === this.currentView.month) monthOption.selected = true
     monthSelect.appendChild(monthOption)
   }.bind(this))
   headerEl.appendChild(monthSelect)
@@ -185,7 +185,7 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   getYearList(this.options.minYear, this.options.maxYear).forEach(function (year) {
     var yearOption = document.createElement('option')
     yearOption.textContent = year
-    if (year === this.currentView.year) yearOption.setAttribute('selected', true)
+    if (year === this.currentView.year) yearOption.selected = true
     yearSelect.appendChild(yearOption)
   }.bind(this))
   headerEl.appendChild(yearSelect)
@@ -222,10 +222,10 @@ AnytimePicker.prototype.renderFooter = function (footerEl) {
 
 AnytimePicker.prototype.updateDisplay = function () {
 
-  this.monthSelect.children[this.currentView.month].setAttribute('selected', true)
+  this.monthSelect.children[this.currentView.month].selected = true
   Array.prototype.slice.call(this.yearSelect.children).some(function (yearEl) {
     if (yearEl.textContent !== '' + this.currentView.year) return false
-    yearEl.setAttribute('selected', true)
+    yearEl.selected = true
     return true
   }.bind(this))
 
@@ -442,9 +442,9 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   hourSelect.classList.add('anytime-picker__dropdown--hours')
   for (var i = 0; i < 24; i++) {
     var hour = document.createElement('option')
-    hour.setAttribute('value', i)
+    hour.value = i
     hour.textContent = pad(i, 2)
-    if (this.createMoment(this.options.initialValue).hours() === i) hour.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).hours() === i) hour.selected = true
     hourSelect.appendChild(hour)
   }
 
@@ -464,9 +464,9 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   minuteSelect.classList.add('anytime-picker__dropdown--minutes')
   for (var j = 0; j < 60; j += this.options.minuteIncrement) {
     var minute = document.createElement('option')
-    minute.setAttribute('value', j)
+    minute.value = j
     minute.textContent = pad(j, 2)
-    if (this.createMoment(this.options.initialValue).minutes() === j) minute.setAttribute('selected', true)
+    if (this.createMoment(this.options.initialValue).minutes() === j) minute.selected = true
     minuteSelect.appendChild(minute)
   }
 
