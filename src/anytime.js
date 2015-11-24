@@ -46,7 +46,7 @@ function AnytimePicker(options) {
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
-  this.monthNames = this.options.moment[this.options.shortMonthNames ? 'monthsShort' : 'months']()
+  this.monthNames = this.getMonthNames()
 
   this.el.addEventListener('click', function (e) {
     if (e.target.classList.contains('js-anytime-picker-day')) {
@@ -90,6 +90,10 @@ AnytimePicker.prototype.getInitialValue = function () {
     return this.createMoment(this.options.input.value, this.options.format)
   }
   return null
+}
+
+AnytimePicker.prototype.getMonthNames = function () {
+  return this.options.moment[this.options.shortMonthNames ? 'monthsShort' : 'months']()
 }
 
 AnytimePicker.prototype.update = function (update) {
