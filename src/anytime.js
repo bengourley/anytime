@@ -110,6 +110,7 @@ AnytimePicker.prototype.update = function (update) {
 
   var updated = update(this.value || this.createMoment())
   this.value = updated
+  this.currentView = { month: this.value.month(), year: this.value.year() }
   this.updateDisplay()
   this.emit('change', this.value.toDate())
 
