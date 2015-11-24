@@ -15,4 +15,18 @@ describe('createMoment()', function () {
 
   })
 
+  it('should use pass the format option so that dates are correctly parsed', function (done) {
+
+    var value = '123'
+      , format = 'YYYY-MM-DD'
+    function spyMoment(val, f) {
+      assert.equal(value, val)
+      assert.equal(format, f)
+      done()
+    }
+
+    createMoment.call({ options: { moment: spyMoment } }, value, format)
+
+  })
+
 })
