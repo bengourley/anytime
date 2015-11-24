@@ -25,6 +25,7 @@ var Emitter = require('events').EventEmitter
       , timeSlidersTitle: 'Time:'
       , timeSlidersHourTitle: 'Hour:'
       , timeSliderMinuteTitle: 'Minute:'
+      , shortMonthNames: true
       }
 
 function AnytimePicker(options) {
@@ -43,7 +44,7 @@ function AnytimePicker(options) {
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
-  this.monthNames = this.options.moment.months()
+  this.monthNames = this.options.moment[this.options.shortMonthNames ? 'monthsShort' : 'months']()
 
   this.el.addEventListener('click', function (e) {
     if (e.target.classList.contains('js-anytime-picker-day')) {
