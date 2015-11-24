@@ -70,14 +70,13 @@ describe('anytime', function () {
           { input: parent
           , moment: moment
           , timezone: 'America/New_York'
-          , format: 'z'
           , initialValue: date
           })
 
       p.render()
 
-      var hourSelected = p.el.querySelector('.anytime-picker__dropdown--hours option[selected]')
-      assert.equal(hourSelected.value, 5)
+      var hourSelect = p.el.querySelector('.anytime-picker__dropdown--hours')
+      assert.equal(hourSelect.value, '5')
     })
   })
 
@@ -230,7 +229,7 @@ describe('anytime', function () {
         , parent = document.createElement('input')
         , p = new Picker({ input: parent, initialValue: new Date() })
 
-      assert.equal('January', p.monthNames[0])
+      assert.equal('Jan', p.monthNames[0])
       assert.equal('en', p.value.locale())
 
     })
@@ -245,7 +244,7 @@ describe('anytime', function () {
 
       var p = new Picker({ input: parent, initialValue: new Date(), moment: moment })
 
-      assert.equal('janvier', p.monthNames[0])
+      assert.equal('janv.', p.monthNames[0])
       assert.equal('fr', p.value.locale())
 
     })

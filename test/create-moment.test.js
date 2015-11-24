@@ -6,6 +6,7 @@ describe('createMoment()', function () {
   it('should use the `moment` setting to create the instance', function (done) {
 
     var value = '123'
+
     function spyMoment(val) {
       assert.equal(value, val)
       done()
@@ -19,13 +20,14 @@ describe('createMoment()', function () {
 
     var value = '123'
       , format = 'YYYY-MM-DD'
+
     function spyMoment(val, f) {
       assert.equal(value, val)
       assert.equal(format, f)
       done()
     }
 
-    createMoment.call({ options: { moment: spyMoment } }, value, format)
+    createMoment.call({ options: { moment: spyMoment, format: format } }, value)
 
   })
 

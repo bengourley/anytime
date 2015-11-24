@@ -4,3 +4,5 @@ var Anytime = require('../../src/anytime')
   , picker = new Anytime({ input: time, button: button, anchor: button })
 
 picker.render()
+
+window.picker = picker

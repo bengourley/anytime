@@ -86,9 +86,7 @@ AnytimePicker.prototype.updateInput = function () {
 
 AnytimePicker.prototype.getInitialValue = function () {
   if (this.options.initialValue) return this.options.initialValue
-  if (this.options.input && this.options.input.value) {
-    return this.createMoment(this.options.input.value, this.options.format)
-  }
+  if (this.options.input && this.options.input.value) return this.options.input.value
   return null
 }
 
@@ -314,15 +312,11 @@ AnytimePicker.prototype.updateDisplay = function () {
   }.bind(this))
 
   if (this.value) {
-    this.timeEls.hours.value = this.value.hour()
-    this.timeEls.minutes.value = this.value.minute()
+    this.timeEls.hours.value = this.value.hour() + ''
+    this.timeEls.minutes.value = this.value.minute() + ''
     if (this.timeEls.hourLabel) this.timeEls.hourLabel.textContent = pad(this.value.hour(), 2)
     if (this.timeEls.minuteLabel) this.timeEls.minuteLabel.textContent = pad(this.value.minute(), 2)
   }
-
-}
-
-AnytimePicker.prototype.getCurrentSelection = function () {
 
 }
 
