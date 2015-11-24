@@ -39,6 +39,8 @@ function AnytimePicker(options) {
   this.el = document.createElement('div')
   this.el.className = 'js-anytime-picker anytime-picker'
 
+  this.options.initialValue = this.getInitialValue()
+
   var initialView = this.createMoment(this.options.initialValue || this.options.initialView)
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
@@ -79,6 +81,14 @@ AnytimePicker.prototype.createMoment = createMoment
 
 AnytimePicker.prototype.updateInput = function () {
   this.options.input.value = this.value ? this.value.format(this.options.format) : ''
+}
+
+AnytimePicker.prototype.getInitialValue = function () {
+  if (this.options.initialValue) return this.options.initialValue
+  if (this.options.input && this.options.input.value) {
+    return this.createMoment(this.options.input.value, this.options.format)
+  }
+  return null
 }
 
 AnytimePicker.prototype.update = function (update) {
