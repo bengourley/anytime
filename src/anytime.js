@@ -6,6 +6,7 @@ var Emitter = require('events').EventEmitter
   , pad = require('pad-number')
   , moment = require('moment')
   , getYearList = require('./lib/get-year-list')
+  , getTimeSeparator = require('./lib/get-time-separator')
   , createButton = require('./lib/create-button')
   , createSlider = require('./lib/create-slider')
   , getMonthDetails = require('./lib/get-month-details')
@@ -569,11 +570,4 @@ AnytimePicker.prototype.destroy = function () {
     delete this.__events['misc toggle']
     this.el = null
   }
-}
-
-function getTimeSeparator() {
-  var colonEl = document.createElement('span')
-  colonEl.classList.add('anytime-picker__time-separator')
-  colonEl.textContent = ':'
-  return colonEl
 }
