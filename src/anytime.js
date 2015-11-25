@@ -19,13 +19,13 @@ var Emitter = require('events').EventEmitter
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: moment
       , minuteIncrement: 1
+      , timeSliders: false
+      , shortMonthNames: true
       , doneText: 'Done'
       , clearText: 'Clear'
-      , timeSliders: false
-      , timeSlidersTitle: 'Time:'
-      , timeSlidersHourTitle: 'Hour:'
-      , timeSliderMinuteTitle: 'Minute:'
-      , shortMonthNames: true
+      , timeSlidersText: 'Time:'
+      , timeSlidersHourText: 'Hour:'
+      , timeSlidersMinuteText: 'Minute:'
       }
 
 function AnytimePicker(options) {
@@ -485,7 +485,7 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
   var timeLabelTitleEl = document.createElement('span')
   timeLabelTitleEl.classList.add('anytime-picker__time-label--title')
   timeLabelEl.appendChild(timeLabelTitleEl)
-  timeLabelTitleEl.textContent = this.options.timeSlidersTitle
+  timeLabelTitleEl.textContent = this.options.timeSlidersText
 
   var timeLabelHourEl = document.createElement('span')
   timeLabelHourEl.classList.add('anytime-picker__time-label--hour')
@@ -507,7 +507,7 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
     , min: 0
     , max: 23
     , value: this.createMoment(this.options.initialValue).hours()
-    , title: this.options.timeSlidersHourTitle
+    , title: this.options.timeSlidersHourText
     })
 
   function updateHour(e) {
@@ -527,7 +527,7 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
     , min: 0
     , max: 59
     , value: this.createMoment(this.options.initialValue).minutes()
-    , title: this.options.timeSliderMinuteTitle
+    , title: this.options.timeSlidersMinuteText
     })
 
   function updateMinute(e) {
