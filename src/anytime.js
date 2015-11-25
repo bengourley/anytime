@@ -20,6 +20,7 @@ var Emitter = require('events').EventEmitter
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: moment
       , minuteIncrement: 1
+      , showTime: true
       , timeSliders: false
       , shortMonthNames: true
       , doneText: 'Done'
@@ -47,6 +48,11 @@ function AnytimePicker(options) {
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
+
+  if (this.value && !this.options.showTime) {
+    this.value = this.value.hour(0).minute(0)
+  }
+
   this.monthNames = this.getMonthNames()
 
   this.el.addEventListener('click', function (e) {
@@ -111,6 +117,11 @@ AnytimePicker.prototype.update = function (update) {
 
   var updated = update(this.value || this.createMoment())
   this.value = updated
+
+  if (!this.options.showTime) {
+    this.value = this.value.hour(0).minute(0)
+  }
+
   this.currentView = { month: this.value.month(), year: this.value.year() }
   this.updateDisplay()
   this.emit('change', this.value.toDate())
@@ -130,10 +141,12 @@ AnytimePicker.prototype.render = function () {
   dates.classList.add('js-anytime-picker-dates')
 
   // Time
-  var time = document.createElement('div')
-  time.classList.add('anytime-picker__time')
-  time.classList.add('js-anytime-picker-time')
-  this.renderTimeInput(time)
+  if (this.options.showTime) {
+    var time = document.createElement('div')
+    time.classList.add('anytime-picker__time')
+    time.classList.add('js-anytime-picker-time')
+    this.renderTimeInput(time)
+  }
 
   // Footer
   var footer = document.createElement('div')
@@ -142,7 +155,7 @@ AnytimePicker.prototype.render = function () {
 
   this.el.appendChild(header)
   this.el.appendChild(dates)
-  this.el.appendChild(time)
+  if (this.options.showTime) this.el.appendChild(time)
   this.el.appendChild(footer)
 
   this.dateContainer = dates
@@ -205,12 +218,12 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
 
 AnytimePicker.prototype.renderFooter = function (footerEl) {
 
-  // 'Done' button
+  // "Done" button
   var doneBtn = createButton(this.options.doneText, [ 'anytime-picker__button', 'anytime-picker__button--done' ])
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', this.hide.bind(this))
 
-  // 'Clear' button
+  // "Clear" button
   var clearBtn = createButton(this.options.clearText, [ 'anytime-picker__button', 'anytime-picker__button--clear' ])
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
@@ -313,7 +326,7 @@ AnytimePicker.prototype.updateDisplay = function () {
     this.dateContainer.appendChild(child)
   }.bind(this))
 
-  if (this.value) {
+  if (this.value && this.timeEls) {
     this.timeEls.hours.value = this.value.hour() + ''
     this.timeEls.minutes.value = this.value.minute() + ''
     if (this.timeEls.hourLabel) this.timeEls.hourLabel.textContent = pad(this.value.hour(), 2)
@@ -553,10 +566,12 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
 }
 
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
-  if (this.options.timeSliders) {
-    this.renderTimeSliders(timeEl)
-  } else {
-    this.renderTimeSelect(timeEl)
+  if (this,options.showTime) {
+    if (this.options.timeSliders) {
+      this.renderTimeSliders(timeEl)
+    } else {
+      this.renderTimeSelect(timeEl)
+    }
   }
 }
 
