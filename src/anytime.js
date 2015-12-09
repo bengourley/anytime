@@ -20,6 +20,7 @@ var Emitter = require('events').EventEmitter
       , format: 'h:mma on dddd D MMMM YYYY'
       , moment: moment
       , minuteIncrement: 1
+      , showTime: true
       , timeSliders: false
       , shortMonthNames: true
       , doneText: 'Done'
@@ -30,7 +31,6 @@ var Emitter = require('events').EventEmitter
       }
 
 function AnytimePicker(options) {
-
   this.options = extend({}, defaults, options)
 
   Emitter.call(this)
@@ -47,6 +47,11 @@ function AnytimePicker(options) {
   this.currentView = { month: initialView.month(), year: initialView.year() }
 
   this.value = this.options.initialValue ? this.createMoment(this.options.initialValue).seconds(0).milliseconds(0) : null
+
+  if (this.value && !this.options.showTime) {
+    this.value = this.value.hour(0).minute(0)
+  }
+
   this.monthNames = this.getMonthNames()
 
   this.el.addEventListener('click', function (e) {
@@ -74,7 +79,6 @@ function AnytimePicker(options) {
     this.updateInput(this)
     this.on('change', this.updateInput.bind(this))
   }
-
 }
 
 AnytimePicker.prototype = Object.create(Emitter.prototype)
@@ -96,7 +100,6 @@ AnytimePicker.prototype.getMonthNames = function () {
 }
 
 AnytimePicker.prototype.update = function (update) {
-
   if (update === null || update === undefined) {
     this.value = null
     this.updateDisplay()
@@ -111,14 +114,17 @@ AnytimePicker.prototype.update = function (update) {
 
   var updated = update(this.value || this.createMoment())
   this.value = updated
+
+  if (!this.options.showTime) {
+    this.value = this.value.hour(0).minute(0)
+  }
+
   this.currentView = { month: this.value.month(), year: this.value.year() }
   this.updateDisplay()
   this.emit('change', this.value.toDate())
-
 }
 
 AnytimePicker.prototype.render = function () {
-
   // Header
   var header = document.createElement('div')
   header.classList.add('anytime-picker__header')
@@ -130,10 +136,12 @@ AnytimePicker.prototype.render = function () {
   dates.classList.add('js-anytime-picker-dates')
 
   // Time
-  var time = document.createElement('div')
-  time.classList.add('anytime-picker__time')
-  time.classList.add('js-anytime-picker-time')
-  this.renderTimeInput(time)
+  if (this.options.showTime) {
+    var time = document.createElement('div')
+    time.classList.add('anytime-picker__time')
+    time.classList.add('js-anytime-picker-time')
+    this.renderTimeInput(time)
+  }
 
   // Footer
   var footer = document.createElement('div')
@@ -142,7 +150,7 @@ AnytimePicker.prototype.render = function () {
 
   this.el.appendChild(header)
   this.el.appendChild(dates)
-  this.el.appendChild(time)
+  if (this.options.showTime) this.el.appendChild(time)
   this.el.appendChild(footer)
 
   this.dateContainer = dates
@@ -150,11 +158,9 @@ AnytimePicker.prototype.render = function () {
   this.updateDisplay()
 
   return this
-
 }
 
 AnytimePicker.prototype.renderHeader = function (headerEl) {
-
   // Previous month button
   var prevBtn = createButton('<', [ 'anytime-picker__button', 'anytime-picker__button--prev' ])
   headerEl.appendChild(prevBtn)
@@ -200,28 +206,24 @@ AnytimePicker.prototype.renderHeader = function (headerEl) {
   var nextBtn = createButton('>', [ 'anytime-picker__button', 'anytime-picker__button--next' ])
   headerEl.appendChild(nextBtn)
   nextBtn.addEventListener('click', this.showNextMonth.bind(this))
-
 }
 
 AnytimePicker.prototype.renderFooter = function (footerEl) {
-
-  // 'Done' button
+  // "Done" button
   var doneBtn = createButton(this.options.doneText, [ 'anytime-picker__button', 'anytime-picker__button--done' ])
   footerEl.appendChild(doneBtn)
   doneBtn.addEventListener('click', this.hide.bind(this))
 
-  // 'Clear' button
+  // "Clear" button
   var clearBtn = createButton(this.options.clearText, [ 'anytime-picker__button', 'anytime-picker__button--clear' ])
   footerEl.appendChild(clearBtn)
   clearBtn.addEventListener('click', function () {
     this.update(null)
     this.hide()
   }.bind(this))
-
 }
 
 AnytimePicker.prototype.updateDisplay = function () {
-
   this.monthSelect.children[this.currentView.month].selected = true
   Array.prototype.slice.call(this.yearSelect.children).some(function (yearEl) {
     if (yearEl.textContent !== '' + this.currentView.year) return false
@@ -313,17 +315,15 @@ AnytimePicker.prototype.updateDisplay = function () {
     this.dateContainer.appendChild(child)
   }.bind(this))
 
-  if (this.value) {
+  if (this.value && this.timeEls) {
     this.timeEls.hours.value = this.value.hour() + ''
     this.timeEls.minutes.value = this.value.minute() + ''
     if (this.timeEls.hourLabel) this.timeEls.hourLabel.textContent = pad(this.value.hour(), 2)
     if (this.timeEls.minuteLabel) this.timeEls.minuteLabel.textContent = pad(this.value.minute(), 2)
   }
-
 }
 
 AnytimePicker.prototype.show = function () {
-
   this.root.offsetParent.appendChild(this.el)
 
   this.el.classList.add('anytime-picker--is-visible')
@@ -359,11 +359,9 @@ AnytimePicker.prototype.show = function () {
     window.addEventListener('resize', this.__events['window resize position'])
     document.dispatchEvent(new CustomEvent('anytime::open', { detail: { instance: this } }))
   }.bind(this))
-
 }
 
 AnytimePicker.prototype.hide = function () {
-
   this.el.classList.remove('anytime-picker--is-visible')
 
   document.removeEventListener('keyup', this.__events['doc escape hide'])
@@ -379,7 +377,6 @@ AnytimePicker.prototype.hide = function () {
   delete this.__events['window resize position']
 
   if (this.el.parentNode) this.el.parentNode.removeChild(this.el)
-
 }
 
 AnytimePicker.prototype.updatePosition = function () {
@@ -432,7 +429,6 @@ AnytimePicker.prototype.showNextMonth = function () {
 }
 
 AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
-
   var hourSelect = document.createElement('select')
   hourSelect.classList.add('anytime-picker__dropdown')
   hourSelect.classList.add('anytime-picker__dropdown--hours')
@@ -475,7 +471,6 @@ AnytimePicker.prototype.renderTimeSelect = function (timeEl) {
   timeEl.appendChild(minuteSelect)
 
   this.timeEls = { hours: hourSelect, minutes: minuteSelect }
-
 }
 
 AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
@@ -549,14 +544,15 @@ AnytimePicker.prototype.renderTimeSliders = function (timeEl) {
     , hourLabel: timeLabelHourEl
     , minuteLabel: timeLabelMinuteEl
     }
-
 }
 
 AnytimePicker.prototype.renderTimeInput = function (timeEl) {
-  if (this.options.timeSliders) {
-    this.renderTimeSliders(timeEl)
-  } else {
-    this.renderTimeSelect(timeEl)
+  if (this.options.showTime) {
+    if (this.options.timeSliders) {
+      this.renderTimeSliders(timeEl)
+    } else {
+      this.renderTimeSelect(timeEl)
+    }
   }
 }
 
