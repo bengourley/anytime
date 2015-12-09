@@ -14,9 +14,14 @@ interface AnytimeOptions {
     format?: string;
     moment?: any;  // moment or moment-timezone
     timezone?: string;
+    showTime?: boolean;
+    timeSliders?: boolean;
+    shortMonthNames?: boolean;
     doneText?: string;
     clearText?: string;
-    timeSliders?: boolean;
+    timeSlidersText?: string;
+    timeSlidersHourText?: string;
+    timeSlidersMinuteText?: string;
 }
 
 interface Anytime {
