@@ -136,8 +136,9 @@ AnytimePicker.prototype.render = function () {
   dates.classList.add('js-anytime-picker-dates')
 
   // Time
+  var time
   if (this.options.showTime) {
-    var time = document.createElement('div')
+    time = document.createElement('div')
     time.classList.add('anytime-picker__time')
     time.classList.add('js-anytime-picker-time')
     this.renderTimeInput(time)
