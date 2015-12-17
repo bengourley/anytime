@@ -13,6 +13,7 @@
     "url": "http://github.com/bengourley/anytime.git"
   },
   "main": "src/anytime.js",
+  "typings": "src/anytime.d.ts",
   "scripts": {
     "lint": "jshint . --reporter=./node_modules/jshint-full-path/index.js",
     "pretest": "npm run-script lint",
