@@ -5,8 +5,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 var autoprefixer = require('gulp-autoprefixer')
-  , browserify = require('browserify')
-  , buffer = require('vinyl-buffer')
   , del = require('del')
   , ghPages = require('gulp-gh-pages')
   , gulp = require('gulp')
@@ -17,9 +15,7 @@ var autoprefixer = require('gulp-autoprefixer')
   , minifyCss = require('gulp-minify-css')
   , sass = require('gulp-sass')
   , st = require('st')
-  , rename = require('gulp-rename')
-  , source = require('vinyl-source-stream')
-  , uglify = require('gulp-uglify')
+  , webpack = require('webpack')
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,12 +23,12 @@ var autoprefixer = require('gulp-autoprefixer')
 ////////////////////////////////////////////////////////////////////////////////
 
 var paths =
-  { webSrcHtml: 'website/index.jade'
-  , webSrcJs: 'website/js/index.js'
-  , webSrcScss: 'website/styles/index.scss'
-  , webDest: 'website/build/'
-  , libSrcJs: 'src/anytime.js'
-  , libDest: 'dist/'
+  { webSrcHtml: './website/index.jade'
+  , webSrcJs: './website/js/index.js'
+  , webSrcScss: './website/styles/index.scss'
+  , webDest: './website/build/'
+  , libSrcJs: './src/anytime.js'
+  , libDest: './dist/'
   }
 
 
@@ -64,17 +60,28 @@ gulp.task('styles', function() {
 
 // Process JS scripts
 gulp.task('scripts', function(cb) {
-  browserify(paths.webSrcJs)
-    .bundle()
-    .on('error', function(err) {
-      console.error(err)
-      this.emit('end')
-    })
-    .pipe(source('index.js'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest(paths.webDest))
-    .on('end', cb)
+  webpack(
+    { entry: paths.webSrcJs
+    , output:
+      { path: paths.webDest
+      , filename: 'index.js'
+      }
+    , plugins:
+      [ new webpack.optimize.DedupePlugin()
+      , new webpack.optimize.OccurenceOrderPlugin()
+      , new webpack.optimize.UglifyJsPlugin(
+          { compress: { warnings: false }
+          , output: { comments: false }
+          , sourceMap: false
+          }
+        )
+      ]
+    }
+    , function(webpack_err, stats) {
+      if (webpack_err) cb(webpack_err)
+      cb()
+    }
+  )
 })
 
 // Compile library website
@@ -114,27 +121,35 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
     , ''
     ].join('\n')
 
-  // Bundle with Browserify
-  browserify(paths.libSrcJs, { standalone: 'Anytime' })
-    .bundle()
-    .on('error', function(err) {
-      console.error(err)
-      this.emit('end')
-    })
+  // Bundle with Webpack
+  webpack(
+    { entry: paths.libSrcJs
+    , output:
+      { path: paths.libDest
+      , filename: 'anytime.js'
+      , library: 'anytime'
+      , libraryTarget: 'umd'
+      }
+    , plugins:
+      [ new webpack.optimize.DedupePlugin()
+      , new webpack.optimize.OccurenceOrderPlugin()
+      , new webpack.optimize.UglifyJsPlugin(
+          { compress: { warnings: false }
+          , output: { comments: false }
+          , sourceMap: false
+          }
+        )
+      ]
+    }
+    , function(webpack_err, stats) {
+      if (webpack_err) cb(webpack_err)
 
-    // Normal file
-    .pipe(source('anytime.js'))
-    .pipe(buffer())
-    .pipe(header(banner, { pkg: pkg } ))
-    .pipe(gulp.dest(paths.libDest))
-
-    // Minified file
-    .pipe(uglify())
-    .pipe(rename('anytime.min.js'))
-    .pipe(header(banner, { pkg: pkg } ))
-    .pipe(gulp.dest(paths.libDest))
-
-    .on('end', cb)
+      gulp.src(paths.libDest + 'anytime.js')
+        .pipe(header(banner, { pkg: pkg } ))
+        .pipe(gulp.dest(paths.libDest))
+        .on('end', cb)
+    }
+  )
 })
 
 // Deploy to GitHub Pages
