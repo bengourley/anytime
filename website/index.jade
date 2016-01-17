@@ -29,7 +29,7 @@ html
         p The only supported way of using Anytime is with browserify.
 
         pre.code-sample: code.
-          var Anytime = require('anytime')
+          var anytime = require('anytime')
 
         p.
           <a href="https://github.com/bengourley/anytime/blob/master/src/anytime.css">Here’s
@@ -39,7 +39,7 @@ html
 
         h2: a(id='constructor', href='#constructor') Creating a date/time picker:
         pre.code-sample: code.
-          var p = new Anytime(options)
+          var p = new anytime(options)
 
         h3: a(id='options', href='#options') Options
         table(cellpadding='0' cellspacing='0')
@@ -219,14 +219,14 @@ html
 
         h3: a(id='i18n', href='#i18n') i18n
         p.
-          To use anytime in a language other than the default (English) you need to load in your desired locale
+          To use Anytime in a language other than the default (English) you need to load in your desired locale
           to <code>moment</code> and pass it in as an option like so:
 
         pre.code-sample: code.
           var moment = require('moment')
           require('moment/locale/fr')
           moment.locale('fr')
-          var picker = new Anytime({ moment: moment })
+          var picker = new anytime({ moment: moment })
 
         p If you want timezone support, you must pass in a <code>moment-timezone</code> instance and set the timezone option:
 
@@ -234,7 +234,7 @@ html
           var moment = require('moment-timezone')
           require('moment/locale/fr')
           moment.locale('fr')
-          var picker = new Anytime({ moment: moment, timezone: 'Europe/Paris' })
+          var picker = new anytime({ moment: moment, timezone: 'Europe/Paris' })
 
       footer.main-footer
         p Made by Ben Gourley at <a href='http://www.clock.co.uk/'>Clock</a>.

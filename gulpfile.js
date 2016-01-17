@@ -19,7 +19,7 @@ var autoprefixer = require('gulp-autoprefixer')
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// Paths                                                                      //
+// Config                                                                     //
 ////////////////////////////////////////////////////////////////////////////////
 
 var paths =
@@ -31,9 +31,20 @@ var paths =
   , libDest: './dist/'
   }
 
+var webpackPlugins =
+  [ new webpack.optimize.DedupePlugin()
+  , new webpack.optimize.OccurenceOrderPlugin()
+  , new webpack.optimize.UglifyJsPlugin(
+      { compress: { warnings: false }
+      , output: { comments: false }
+      , sourceMap: false
+      }
+    )
+  ]
+
 
 ////////////////////////////////////////////////////////////////////////////////
-// Gulp tasks                                                                 //
+// Gulp tasks for the website                                                 //
 ////////////////////////////////////////////////////////////////////////////////
 
 // Delete generated website files
@@ -66,16 +77,7 @@ gulp.task('scripts', function(cb) {
       { path: paths.webDest
       , filename: 'index.js'
       }
-    , plugins:
-      [ new webpack.optimize.DedupePlugin()
-      , new webpack.optimize.OccurenceOrderPlugin()
-      , new webpack.optimize.UglifyJsPlugin(
-          { compress: { warnings: false }
-          , output: { comments: false }
-          , sourceMap: false
-          }
-        )
-      ]
+    , plugins: webpackPlugins
     }
     , function(webpack_err, stats) {
       if (webpack_err) cb(webpack_err)
@@ -102,13 +104,23 @@ gulp.task('watch:web', ['build:web'], function() {
   ).listen(8080)
 })
 
+// Deploy to GitHub Pages
+gulp.task('deploy', ['build:web'], function() {
+  return gulp.src(paths.webDest + '/**/*')
+    .pipe(ghPages())
+})
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Gulp tasks for the library                                                 //
+////////////////////////////////////////////////////////////////////////////////
+
 // Delete generated Anytime files
 gulp.task('clean:lib', function() {
   del.sync(paths.libDest, { force: true })
 })
 
-// Compile Anytime library
-gulp.task('build:lib', ['clean:lib'], function(cb) {
+var buildLib = function(filename, externals, cb) {
   var pkg = require('./package.json')
 
   var banner =
@@ -126,34 +138,31 @@ gulp.task('build:lib', ['clean:lib'], function(cb) {
     { entry: paths.libSrcJs
     , output:
       { path: paths.libDest
-      , filename: 'anytime.js'
+      , filename: filename
       , library: 'anytime'
       , libraryTarget: 'umd'
       }
-    , plugins:
-      [ new webpack.optimize.DedupePlugin()
-      , new webpack.optimize.OccurenceOrderPlugin()
-      , new webpack.optimize.UglifyJsPlugin(
-          { compress: { warnings: false }
-          , output: { comments: false }
-          , sourceMap: false
-          }
-        )
-      ]
+    , plugins: webpackPlugins
+    , externals: externals
     }
     , function(webpack_err, stats) {
       if (webpack_err) cb(webpack_err)
 
-      gulp.src(paths.libDest + 'anytime.js')
+      gulp.src(paths.libDest + filename)
         .pipe(header(banner, { pkg: pkg } ))
         .pipe(gulp.dest(paths.libDest))
         .on('end', cb)
     }
   )
+}
+
+gulp.task('build:lib-with-moment', function(cb) {
+  buildLib('anytime-with-moment.js', {}, cb);
 })
 
-// Deploy to GitHub Pages
-gulp.task('deploy', ['build:web'], function() {
-  return gulp.src(paths.webDest + '/**/*')
-    .pipe(ghPages())
+gulp.task('build:lib-without-moment', function(cb) {
+  buildLib('anytime.js', { 'moment': 'moment' }, cb);
 })
+
+// Compile Anytime library
+gulp.task('build:lib', ['clean:lib', 'build:lib-with-moment', 'build:lib-without-moment'])
