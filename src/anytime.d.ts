@@ -178,6 +178,6 @@ export interface Anytime {
     destroy(): void;
 }
 
-declare var anytime: Anytime;
+export var anytime: Anytime;
 
 export default anytime;
