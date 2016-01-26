@@ -1,6 +1,6 @@
 /**
  * anytime - A date/time picker
- * @version 1.3.0
+ * @version 1.4.0
  * @link http://bengourley.github.io/anytime/
  * @license ISC
  */
