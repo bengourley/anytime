@@ -1,4 +1,4 @@
-interface AnytimeOptions {
+export interface AnytimeOptions {
     /**
      * An input whose value should update when the picker’s value changes.
      * @default null
@@ -6,7 +6,7 @@ interface AnytimeOptions {
     input?: HTMLInputElement;
 
     /**
-     * An element that the picker will orient itself near when displayed. 
+     * An element that the picker will orient itself near when displayed.
      * If options.input is not provided, this option is required.
      * @default options.input
      */
@@ -31,7 +31,7 @@ interface AnytimeOptions {
     maxYear?: number;
 
     /**
-     * By default anytime will show every minute. 
+     * By default anytime will show every minute.
      * Set this to 5 or 15 etc to show fewer options at greater intervals.
      * @default 1
      */
@@ -50,7 +50,7 @@ interface AnytimeOptions {
     initialValue?: Date;
 
     /**
-     * Value to indicate which month/year to display when picker is first shown. 
+     * Value to indicate which month/year to display when picker is first shown.
      * If options.initialValue is selected, that will take precedence.
      * @default new Date()
      */
@@ -63,8 +63,8 @@ interface AnytimeOptions {
     format?: string;
 
     /**
-     * By default anytime uses an instance of moment in the browser’s timezone with the English locale. 
-     * If you want to use a different language or a different timezone, you must load in a locale to moment 
+     * By default anytime uses an instance of moment in the browser’s timezone with the English locale.
+     * If you want to use a different language or a different timezone, you must load in a locale to moment
      * and/or pass in a version of moment-timezone.
      * @type moment or moment-timezone
      * @default moment
@@ -72,7 +72,7 @@ interface AnytimeOptions {
     moment?: any;
 
     /**
-     * moment-style timezone string (e.g. 'Europe/London'). 
+     * moment-style timezone string (e.g. 'Europe/London').
      * Only functions if moment-timezone is provided as options.moment!
      * @default Browser’s timezone
      */
@@ -126,7 +126,7 @@ interface AnytimeOptions {
     timeSlidersMinuteText?: string;
 }
 
-interface Anytime {
+export interface Anytime {
     /**
      * Instantiates and returns a new picker with the provided options.
      */
@@ -160,11 +160,11 @@ interface Anytime {
 
     /**
      * Update the internal value of the picker. This will also update the related input (if there is one).
-     * @param {function} fn  A function where you can manipulate the internal moment object. 
+     * @param {function} fn  A function where you can manipulate the internal moment object.
      *                       The moment object must be returned.
      */
     update(fn: (m: any) => any): void;
-    
+
     /**
      * When a value is selected (or cleared) with the picker, the change event will emit with the new value.
      * @param {string} event  This must be "change".
@@ -180,6 +180,4 @@ interface Anytime {
 
 declare var anytime: Anytime;
 
-declare module "anytime" {
-    export = anytime;
-}
+export default anytime;
