@@ -23,9 +23,6 @@
     "prepublish": "npm test && npm prune && npm run-script build",
     "website": "gulp watch:web"
   },
-  "engines": {
-    "node": ">= 4.0.0"
-  },
   "dependencies": {
     "lodash.assign": "*",
     "lodash.throttle": "*",
