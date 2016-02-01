@@ -395,8 +395,7 @@ AnytimePicker.prototype.updatePosition = function () {
   this.el.style.transform = transformValue
 }
 
-AnytimePicker.prototype.toggle = function (e) {
-  e.stopPropagation()
+AnytimePicker.prototype.toggle = function () {
   if (this.el.classList.contains('anytime-picker--is-visible')) {
     this.hide()
   } else {
