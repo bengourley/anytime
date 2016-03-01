@@ -21,7 +21,9 @@
     "posttest": "istanbul check-coverage && rm -rf coverage",
     "build": "gulp build:lib",
     "prepublish": "npm test && npm prune && npm run-script build",
-    "website": "gulp watch:web"
+    "buildwebsite": "gulp build:web",
+    "watch": "gulp watch:web",
+    "deploy": "gulp deploy"
   },
   "dependencies": {
     "lodash.assign": "*",

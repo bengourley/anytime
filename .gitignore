@@ -4,3 +4,4 @@ website/build/
 .DS_Store
 .zuulrc
 npm-debug.log
+.publish
