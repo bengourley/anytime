@@ -393,6 +393,8 @@ AnytimePicker.prototype.updatePosition = function () {
 
   this.el.style.webkitTransform = transformValue
   this.el.style.transform = transformValue
+  this.el.style.top = 0
+  this.el.style.left = 0
 }
 
 AnytimePicker.prototype.toggle = function () {
